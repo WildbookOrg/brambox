@@ -90,7 +90,7 @@ class KittiParser(Parser):
         When serializing, all fractions bigger or equal to 0.5 will be converted to largely occluded (2),
         fractions between 0.5 and 0 to partly occluded (1) and fractions of 0 will be converted to fully visible (0).
 
-    .. _kitti: https://www.cvlibs.net/datasets/kitti/eval_object.php?obj_benchmark=2d
+    .. _kitti: www.cvlibs.net/datasets/kitti/eval_object.php?obj_benchmark=2d
     """
     parser_type = ParserType.MULTI_FILE
     box_type = KittiAnnotation
