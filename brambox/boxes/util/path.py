@@ -1,19 +1,21 @@
 #
 #   Copyright EAVISE
 #   Author: Maarten Vandersteegen
+#   Author: Tanguy Ophoff
 #
 
 import os
+from pathlib import Path
 import glob
 
 __all__ = ["expand"]
 
 
-def files(path):
+def files(folder):
     """ List all files in a directory omitting directories. """
-    for file in os.listdir(path):
-        if os.path.isfile(os.path.join(path, file)):
-            yield os.path.join(path, file)
+    for filepath in Path(folder).glob('**/*'):
+        if filepath.is_file():
+            yield str(filepath)
 
 
 def strider(elements, stride, offset):
@@ -60,16 +62,21 @@ def expand(expr, stride=1, offset=0):
         The ``expr`` parameter can be one of the following expressions:
 
         - a file itself -> return filename
-        - a directory -> return files from directory
-        - path with **'*'** wildcard -> return globbed files
+        - a directory -> return files from directory and subdirectories (recursive)
+        - path with **'*'** wildcard -> return globbed files (recursive if **'\*\*'** is used)
         - path with **'%d'** wildcard -> return incremental files
+
+    Warning:
+        If you use **'*'** wildcards in your expression, this function glob it recursively,
+        meaning **'\*\*'** wildcards will go down through all the subdirectories.
+        If the folder contains symlinked loops, this will cause this function to generate the same files over and over again.
     """
     if os.path.isdir(expr):
         return strider(sorted(files(expr)), stride, offset)
     elif os.path.isfile(expr):
         return [expr]
     elif '*' in expr:
-        return strider(sorted(glob.glob(expr)), stride, offset)
+        return strider(sorted(glob.glob(expr, recursive=True)), stride, offset)
     elif '%' in expr:
         return modulo_expand(expr, stride, offset)
     else:
