@@ -30,7 +30,7 @@ class PascalVocDetection(Detection):
         self.width = float(elements[4]) - self.x_top_left + 1
         self.height = float(elements[5]) - self.y_top_left + 1
 
-        self.object_id = 0
+        self.object_id = None
 
         return elements[0]
 

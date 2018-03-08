@@ -2,13 +2,13 @@ import unittest
 from brambox.boxes.annotations.annotation import Annotation
 from brambox.boxes.annotations import VaticAnnotation, VaticParser
 
-vatic_string = """0 0 0 0 0 0 0 0 0 ?
-0 0 0 0 0 0 0 0 0 ?
-0 0 0 0 0 0 0 0 0 person
-0 0 0 0 0 1 0 0 0 person"""
+vatic_string = """-1 0 0 0 0 0 0 0 0 ?
+-1 0 0 0 0 0 0 0 0 ?
+-1 0 0 0 0 0 0 0 0 person
+-1 0 0 0 0 1 0 0 0 person"""
 
 
-class TestCvcAnnotation(unittest.TestCase):
+class TestVaticAnnotation(unittest.TestCase):
     def setUp(self):
         self.anno = VaticAnnotation()
 
@@ -17,7 +17,6 @@ class TestCvcAnnotation(unittest.TestCase):
 
     def test_serialize(self):
         """ test if major fields: label, x, y, w, h, object_id, frame_nr are serialized """
-
         frame_nr = 100
         self.anno.class_label = "person"
         self.anno.object_id = 3
@@ -31,32 +30,28 @@ class TestCvcAnnotation(unittest.TestCase):
 
     def test_serialize_round(self):
         """ test if serialize rounds the x,y,w,h values correctly """
-
         self.anno.x_top_left = 12.8
         self.anno.y_top_left = 14.4
         self.anno.width = 14.56
         self.anno.height = 16.1
 
         string = self.anno.serialize()
-        self.assertEqual(string, "0 13 14 27 30 0 0 0 0 ?")
+        self.assertEqual(string, "-1 13 14 27 30 0 0 0 0 ?")
 
     def test_serialize_occluded(self):
         """ test if occluded flag is serialized """
-
         self.anno.occluded = 1
         string = self.anno.serialize()
-        self.assertEqual(string, "0 0 0 0 0 0 0 1 0 ?")
+        self.assertEqual(string, "-1 0 0 0 0 0 0 1 0 ?")
 
     def test_serialize_lost(self):
         """ test if lost flag is serialized """
-
         self.anno.lost = 1
         string = self.anno.serialize()
-        self.assertEqual(string, "0 0 0 0 0 0 1 0 0 ?")
+        self.assertEqual(string, "-1 0 0 0 0 0 1 0 0 ?")
 
     def test_deserialize(self):
         """ test if major fields: label, x, y, w, h, object_id, frame_nr are processed """
-
         string = "3 13 14 28 30 100 0 0 0 person"
         self.anno.deserialize(string)
         self.assertEqual(self.anno.object_id, 3)
@@ -70,15 +65,13 @@ class TestCvcAnnotation(unittest.TestCase):
 
     def test_deserialize_occluded(self):
         """ test if occluded flag is processed """
-
-        string = "0 0 0 0 0 0 0 1 0 ?"
+        string = "-1 0 0 0 0 0 0 1 0 ?"
         self.anno.deserialize(string)
         self.assertTrue(self.anno.occluded)
 
     def test_deserialize_lost(self):
         """ test if lost flag is processed """
-
-        string = "0 0 0 0 0 0 1 0 0 ?"
+        string = "-1 0 0 0 0 0 1 0 0 ?"
         self.anno.deserialize(string)
         self.assertTrue(self.anno.lost)
 

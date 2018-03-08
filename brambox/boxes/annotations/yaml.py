@@ -49,7 +49,7 @@ class YamlAnnotation(Annotation):
         else:
             self.truncated_fraction = yaml_obj['truncated_fraction']/100
 
-        self.object_id = 0
+        self.object_id = None
 
 
 class YamlParser(Parser):

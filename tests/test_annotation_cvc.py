@@ -2,9 +2,9 @@ import unittest
 from brambox.boxes.annotations.annotation import Annotation
 from brambox.boxes.annotations import CvcAnnotation, CvcParser
 
-cvc_string = """0 0 0 0 1 0 0 0 0 0 0
-0 0 0 0 1 0 0 0 0 0 0
-3 0 0 0 1 0 0 0 0 0 0
+cvc_string = """0 0 0 0 1 0 0 0 0 -1 0
+0 0 0 0 1 0 0 0 0 -1 0
+3 0 0 0 1 0 0 0 0 -1 0
 """
 
 
@@ -17,7 +17,6 @@ class TestCvcAnnotation(unittest.TestCase):
 
     def test_serialize(self):
         """ test if major fields, x,y,w,h are serialized """
-
         self.anno.x_top_left = 13
         self.anno.y_top_left = 11
         self.anno.width = 18
@@ -29,18 +28,16 @@ class TestCvcAnnotation(unittest.TestCase):
 
     def test_serialize_round(self):
         """ test if serialize rounds the x,y,w,h,object_id values correctly """
-
         self.anno.x_top_left = 12.8
         self.anno.y_top_left = 11.4
         self.anno.width = 18.56
         self.anno.height = 16.1
 
         string = self.anno.serialize()
-        self.assertEqual(string, "22 19 19 16 1 0 0 0 0 0 0")
+        self.assertEqual(string, "22 19 19 16 1 0 0 0 0 -1 0")
 
     def test_deserialize(self):
         """ test if major fields, x,y,w,h,object_id are processed """
-
         string = "60 50 30 40 1 0 0 0 0 3 0"
         self.anno.deserialize(string)
         self.assertAlmostEqual(self.anno.x_top_left, 45)

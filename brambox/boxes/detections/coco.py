@@ -35,7 +35,7 @@ class CocoDetection(Detection):
         self.height = float(json_obj['bbox'][3])
         self.confidence = json_obj['score']
 
-        self.object_id = 0
+        self.object_id = None
 
 
 class CocoParser(Parser):

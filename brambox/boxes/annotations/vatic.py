@@ -14,11 +14,9 @@ __all__ = ["VaticAnnotation", "VaticParser"]
 
 class VaticAnnotation(Annotation):
     """ VATIC tool annotation """
-
     def serialize(self, frame_nr=0):
         """ generate a vatic annotation string """
-
-        object_id = self.object_id
+        object_id = self.object_id if self.object_id is not None else -1
         x_min = round(self.x_top_left)
         y_min = round(self.y_top_left)
         x_max = round(self.x_top_left + self.width)
@@ -44,9 +42,10 @@ class VaticAnnotation(Annotation):
 
     def deserialize(self, string):
         """ parse a valitc annotation """
-
         elements = string.split()
         self.object_id = int(elements[0])
+        if self.object_id < 0:
+            self.object_id = None
         self.x_top_left = float(elements[1])
         self.y_top_left = float(elements[2])
         self.width = abs(float(elements[3]) - self.x_top_left)

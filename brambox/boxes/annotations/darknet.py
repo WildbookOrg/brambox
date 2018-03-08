@@ -58,7 +58,7 @@ class DarknetAnnotation(Annotation):
 
         self.occluded = False
         self.lost = False
-        self.object_id = 0
+        self.object_id = None
 
         return self
 

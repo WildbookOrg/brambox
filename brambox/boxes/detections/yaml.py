@@ -35,7 +35,7 @@ class YamlDetection(Detection):
         self.height = float(yaml_obj['coords'][3])
         self.confidence = yaml_obj['score'] / 100
 
-        self.object_id = 0
+        self.object_id = None
 
 
 class YamlParser(Parser):

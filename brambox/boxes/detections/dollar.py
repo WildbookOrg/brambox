@@ -31,7 +31,7 @@ class DollarDetection(Detection):
         self.height = float(elements[4])
         self.confidence = float(elements[5])
 
-        self.object_id = 0
+        self.object_id = None
 
 
 class DollarParser(Parser):

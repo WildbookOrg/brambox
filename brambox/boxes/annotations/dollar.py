@@ -52,7 +52,7 @@ class DollarAnnotation(Annotation):
         self.visible_height = float(elements[9])
         self.lost = elements[10] != '0'
 
-        self.object_id = 0
+        self.object_id = None
 
         return self
 
