@@ -16,6 +16,10 @@ class TestPascalVocDetection(unittest.TestCase):
     def tearDown(self):
         pass
 
+    def test_det_serialize(self):
+        """ test if serialization of one detection works """
+        self.assertRaises(NotImplementedError, self.det.serialize)
+
     def test_det_deserialize(self):
         """ test if deserialization of one detection works """
         self.det.deserialize('img_id 0.9090 10.01 20.02 29.03 39.04', 'person')
@@ -26,6 +30,10 @@ class TestPascalVocDetection(unittest.TestCase):
         self.assertAlmostEqual(self.det.y_top_left, 20.02)
         self.assertAlmostEqual(self.det.width, 20.02)
         self.assertAlmostEqual(self.det.height, 20.02)
+
+    def test_det_serialize(self):
+        """ test basic serialization with parser """
+        self.assertRaises(NotImplementedError, self.parser.serialize, self.det)
 
     def test_parser_deserialize(self):
         """ test basic deserialization with parser """
