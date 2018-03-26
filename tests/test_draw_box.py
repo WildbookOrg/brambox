@@ -10,11 +10,6 @@ import brambox.boxes as bbb
 
 class TestDrawBoxes(unittest.TestCase):
     def setUp(self):
-        self.img = np.zeros((50, 50, 3), dtype=np.uint8)
-        self.res = self.img.copy()
-        if cv2 is not None:
-            cv2.rectangle(self.res, (1, 5), (11, 20), (255, 255, 255), 2)
-
         self.anno = bbb.annotations.Annotation()
         self.anno.x_top_left = 1
         self.anno.y_top_left = 5
@@ -40,7 +35,7 @@ class TestDrawBoxes(unittest.TestCase):
         res = bbb.draw_boxes(img.copy(), [self.anno], (255, 0, 0))
         imgdraw.line([(1, 5), (11, 5), (11, 20), (1, 20), (1, 5)], (255, 0, 0), 3)
 
-        self.assertEqual(list(img.getdata()), list(res.getdata()))
+        self.assertEqual(list(res.getdata()), list(img.getdata()))
 
 
 if __name__ == '__main__':

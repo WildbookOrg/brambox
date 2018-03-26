@@ -19,7 +19,8 @@ __all__ = ['ChannelMixer']
 
 class ChannelMixer:
     """ Mix channels of multiple inputs in a single output image.
-    This class works with opencv_ images (np.ndarray), and will mix the channels of multiple images into one new image.
+    This class will mix the channels of multiple images into one new image.
+    It works with both opencv_ and pillow_ images.
 
     Args:
         num_channels (int, optional): The number of channels the output image will have; Default **3**
