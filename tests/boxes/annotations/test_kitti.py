@@ -11,12 +11,11 @@ Cyclist 0.00 0 -10 0.00 0.00 0.00 0.00 -1 -1 -1 -1000 -1000 -1000 -10
 class TestKittiAnnotation(unittest.TestCase):
     def setUp(self):
         self.anno = KittiAnnotation()
-        self.parser = KittiParser()
 
     def tearDown(self):
         pass
 
-    def test_anno_serialize(self):
+    def test_serialize(self):
         """ test if serialization of one annotation works """
         self.anno.class_label = 'person'
         self.anno.x_top_left = 35
@@ -28,7 +27,7 @@ class TestKittiAnnotation(unittest.TestCase):
         string = self.anno.serialize()
         self.assertEqual(string, 'person 0.00 2 -10 35.00 30.00 65.00 70.00 -1 -1 -1 -1000 -1000 -1000 -10')
 
-    def test_anno_deserialize(self):
+    def test_deserialize(self):
         """ test if deserialization of one annotation works """
         string = 'Pedestrian 0.40 1 0.40 35.00 30.00 65.00 70.00 -1 -1 -1 123 345 456 -10'
         self.anno.deserialize(string)
@@ -41,7 +40,7 @@ class TestKittiAnnotation(unittest.TestCase):
         self.assertAlmostEqual(self.anno.truncated_fraction, 0.4)
         self.assertFalse(self.anno.lost)
 
-    def test_anno_unkown_class_label(self):
+    def test_serialize_deserialize_unkown_class_label(self):
         """ Test anno (de)serialisation with unkown class_label """
         self.anno.class_label = ''
 
@@ -51,7 +50,7 @@ class TestKittiAnnotation(unittest.TestCase):
         anno2 = KittiAnnotation.create(string)
         self.assertEqual(anno2, self.anno)
 
-    def test_anno_occluded_state(self):
+    def test_serialize_deserialize_occluded_fraction(self):
         """ Test occluded states (0,1,2) of the kitti annotations """
         string = '? 0.00 0 -10 0.00 0.00 0.00 0.00 -1 -1 -1 -1000 -1000 -1000 -10'
         anno = KittiAnnotation.create(string)
@@ -68,7 +67,15 @@ class TestKittiAnnotation(unittest.TestCase):
         self.assertAlmostEqual(anno.occluded_fraction, 0.5)
         self.assertEqual(string, anno.serialize())
 
-    def test_parser_serialize(self):
+
+class TestKittiParser(unittest.TestCase):
+    def setUp(self):
+        self.parser = KittiParser()
+
+    def tearDown(self):
+        pass
+
+    def test_serialize(self):
         """ test basic serialization with parser """
         testanno1 = Annotation()
         testanno2 = Annotation()
@@ -79,7 +86,7 @@ class TestKittiAnnotation(unittest.TestCase):
         string = self.parser.serialize(obj)
         self.assertEqual(string, kitti_string)
 
-    def test_parser_deserialize(self):
+    def test_deserialize(self):
         """ test basic deserialization with parser """
         obj = self.parser.deserialize(kitti_string)
         self.assertEqual(type(obj), list)

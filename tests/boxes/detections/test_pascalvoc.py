@@ -11,16 +11,15 @@ img2 0.75 0.00 25.00 49.00 74.00
 class TestPascalVocDetection(unittest.TestCase):
     def setUp(self):
         self.det = PascalVocDetection()
-        self.parser = PascalVocParser(class_label='person')
 
     def tearDown(self):
         pass
 
-    def test_det_serialize(self):
+    def test_serialize(self):
         """ test if serialization of one detection works """
         self.assertRaises(NotImplementedError, self.det.serialize)
 
-    def test_det_deserialize(self):
+    def test_deserialize(self):
         """ test if deserialization of one detection works """
         self.det.deserialize('img_id 0.9090 10.01 20.02 29.03 39.04', 'person')
 
@@ -31,11 +30,19 @@ class TestPascalVocDetection(unittest.TestCase):
         self.assertAlmostEqual(self.det.width, 20.02)
         self.assertAlmostEqual(self.det.height, 20.02)
 
-    def test_det_serialize(self):
-        """ test basic serialization with parser """
-        self.assertRaises(NotImplementedError, self.parser.serialize, self.det)
 
-    def test_parser_deserialize(self):
+class TestPascalVocParser(unittest.TestCase):
+    def setUp(self):
+        self.parser = PascalVocParser(class_label='person')
+
+    def tearDown(self):
+        pass
+
+    def test_serialize(self):
+        """ test basic serialization with parser """
+        self.assertRaises(NotImplementedError, self.parser.serialize, PascalVocDetection())
+
+    def test_deserialize(self):
         """ test basic deserialization with parser """
         obj = self.parser.deserialize(pascalvoc_string)
         self.assertEqual(type(obj), dict)

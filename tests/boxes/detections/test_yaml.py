@@ -28,7 +28,7 @@ class TestYamlDetection(unittest.TestCase):
     def tearDown(self):
         pass
 
-    def test_det_serialize(self):
+    def test_serialize(self):
         """ test if serialization of one detection works """
         self.det.class_label = 'person'
         self.det.x_top_left = 10
@@ -42,7 +42,7 @@ class TestYamlDetection(unittest.TestCase):
         self.assertEqual(val['coords'], [10, 20, 30, 40])
         self.assertAlmostEqual(val['score'], 12.34)
 
-    def test_det_deserialize(self):
+    def test_deserialize(self):
         """ test if deserialization of one detection works """
         self.det.deserialize({'coords': [10, 20, 30, 40], 'score': 12.34}, 'person')
 
@@ -52,7 +52,15 @@ class TestYamlDetection(unittest.TestCase):
         self.assertEqual(self.det.height, 40)
         self.assertAlmostEqual(self.det.confidence, 0.1234)
 
-    def test_parser_serialize(self):
+
+class TestYamlParser(unittest.TestCase):
+    def setUp(self):
+        self.parser = YamlParser()
+
+    def tearDown(self):
+        pass
+
+    def test_serialize(self):
         """ test basic serialization with parser """
         testdet1 = Detection()
         testdet2 = Detection()
@@ -63,7 +71,7 @@ class TestYamlDetection(unittest.TestCase):
         string = self.parser.serialize(obj)
         self.assertEqual(string, yaml_string)
 
-    def test_parser_deserialize(self):
+    def test_deserialize(self):
         """ test basic deserialization with parser """
         obj = self.parser.deserialize(yaml_string)
         self.assertEqual(type(obj), dict)

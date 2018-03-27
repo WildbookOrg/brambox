@@ -14,14 +14,11 @@ class TestDarknetAnnotation(unittest.TestCase):
         self.image_height = 500
         self.class_label_map = ['person', 'car', 'tv', '']
         self.anno = DarknetAnnotation()
-        self.parser = DarknetParser(image_width=self.image_width,
-                                    image_height=self.image_height,
-                                    class_label_map=self.class_label_map)
 
     def tearDown(self):
         pass
 
-    def test_anno_serialize(self):
+    def test_serialize(self):
         """ test if serialization of one annotation works """
         self.anno.class_label = 'person'
         self.anno.x_top_left = 35
@@ -32,13 +29,13 @@ class TestDarknetAnnotation(unittest.TestCase):
         string = self.anno.serialize(self.class_label_map, self.image_width, self.image_height)
         self.assertEqual(string, '0 0.05 0.1 0.03 0.08')
 
-    def test_anno_serialize_class_label_index(self):
+    def test_serialize_class_label_index(self):
         """ test if class label index is correctly mapped """
         self.anno.class_label = 'tv'
         string = self.anno.serialize(self.class_label_map, self.image_width, self.image_height)
         self.assertEqual(string, '2 0.0 0.0 0.0 0.0')
 
-    def test_anno_serialize_no_class_label_map(self):
+    def test_serialize_no_class_label_map(self):
         """ If no class_label_map is given, the annotation should try to get a number """
         string = self.anno.serialize(None, self.image_width, self.image_height)
         self.assertEqual(string, '? 0.0 0.0 0.0 0.0')
@@ -50,7 +47,7 @@ class TestDarknetAnnotation(unittest.TestCase):
         self.anno.class_label = 'willnotwork'
         self.assertRaises(ValueError, self.anno.serialize, None, self.image_width, self.image_height)
 
-    def test_anno_deserialize(self):
+    def test_deserialize(self):
         """ test if deserialization of one annotation works """
         string = '1 0.05 0.1 0.03 0.08'
         self.anno.deserialize(string, self.class_label_map, self.image_width, self.image_height)
@@ -62,7 +59,7 @@ class TestDarknetAnnotation(unittest.TestCase):
         self.assertFalse(self.anno.occluded)
         self.assertFalse(self.anno.lost)
 
-    def test_anno_deserialize_no_class_label_map(self):
+    def test_deserialize_no_class_label_map(self):
         """ If no class_label_map is given, the annotation should use the index as class_label """
         string = '1 0.0 0.0 0.0 0.0'
         self.anno.deserialize(string, None, self.image_width, self.image_height)
@@ -72,7 +69,15 @@ class TestDarknetAnnotation(unittest.TestCase):
         self.anno.deserialize(string, None, self.image_width, self.image_height)
         self.assertEqual(self.anno.class_label, '')
 
-    def test_parser_required_kwargs(self):
+
+class TestDarknetParser(unittest.TestCase):
+    def setUp(self):
+        self.parser = DarknetParser(image_width=1000, image_height=500, class_label_map=['person', 'car', 'tv', ''])
+
+    def tearDown(self):
+        pass
+
+    def test_init_required_kwargs(self):
         """ test if constructor raises correct error when required kwargs
             are missing
         """
@@ -81,7 +86,7 @@ class TestDarknetAnnotation(unittest.TestCase):
         self.assertRaises(ValueError, DarknetParser, image_width=None, image_height=0, class_label_map=[])
         self.assertRaises(ValueError, DarknetParser, image_width=0, image_height=None, class_label_map=[])
 
-    def test_parser_serialize(self):
+    def test_serialize(self):
         """ test basic serialization with parser """
         testanno1 = Annotation()
         testanno2 = Annotation()
@@ -91,16 +96,8 @@ class TestDarknetAnnotation(unittest.TestCase):
         string = self.parser.serialize(obj)
         self.assertEqual(string, darknet_string)
 
-    def test_parser_deserialize(self):
-        """ test basic deserialization with parser """
-        obj = self.parser.deserialize(darknet_string)
-        self.assertEqual(type(obj), list)
-        self.assertEqual(len(obj), 3)
-        self.assertEqual(obj[0].class_label, '')
-        self.assertEqual(obj[2].class_label, 'person')
-
-    def test_parser_ignore_lost(self):
-        """ Test behaviour of parser with lost annotations """
+    def test_serialize_ignore_lost(self):
+        """ Test serialization behaviour of parser with lost annotations """
         testanno1 = Annotation()
         testanno2 = Annotation()
         testanno3 = Annotation()
@@ -110,6 +107,14 @@ class TestDarknetAnnotation(unittest.TestCase):
 
         string = self.parser.serialize(obj)
         self.assertEqual(string, darknet_string)
+
+    def test_deserialize(self):
+        """ test basic deserialization with parser """
+        obj = self.parser.deserialize(darknet_string)
+        self.assertEqual(type(obj), list)
+        self.assertEqual(len(obj), 3)
+        self.assertEqual(obj[0].class_label, '')
+        self.assertEqual(obj[2].class_label, 'person')
 
 
 if __name__ == '__main__':
