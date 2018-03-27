@@ -17,7 +17,6 @@ class DollarDetection(Detection):
 
     def serialize(self):
         """ generate a dollar detection string """
-
         raise NotImplementedError
 
     def deserialize(self, string, class_label_map):
@@ -92,8 +91,9 @@ class DollarParser(Parser):
             raise ValueError("Dollar detection format requires a 'class_label_map' kwarg")
 
     def serialize(self, detections):
-        """ Serialize input detection to dollar detection strings """
-
+        """ **NOT IMPLEMENTED** |br|
+            Serialize input detection to dollar detection strings
+        """
         raise NotImplementedError
 
     def deserialize(self, string):

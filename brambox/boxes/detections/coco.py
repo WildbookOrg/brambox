@@ -79,8 +79,9 @@ class CocoParser(Parser):
             raise ValueError("Coco detection format requires a 'class_label_map' kwarg")
 
     def serialize(self, detections):
-        """ Serialize input detection to a json string """
-
+        """ **NOT IMPLEMENTED** |br|
+            Serialize input detection to a json string
+        """
         raise NotImplementedError
 
     def deserialize(self, string):

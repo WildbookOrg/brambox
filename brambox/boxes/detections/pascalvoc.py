@@ -67,7 +67,9 @@ class PascalVocParser(Parser):
             self.class_label = ''
 
     def serialize(self, detections):
-        """ Serialize input dictionary of detections into one string """
+        """ **NOT IMPLEMENTED** |br|
+            Serialize input dictionary of detections into one string
+        """
         raise NotImplementedError
 
     def deserialize(self, string):
