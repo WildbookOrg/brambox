@@ -5,6 +5,9 @@ You can use this package to convert formats, visualize image annotations and com
 """
 
 from .box import Box, ParserType
+from .annotations import Annotation
+from .detections import Detection
+
 from .formats import *
 from . import annotations
 from . import detections
