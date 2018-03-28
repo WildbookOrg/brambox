@@ -2,7 +2,11 @@
 import os
 import sys
 import argparse
+import logging
+from pathlib import Path
 import brambox.boxes as bbb
+
+log = logging.getLogger('brambox.bbox_convert')
 
 
 class StoreKwargs(argparse.Action):
@@ -45,17 +49,14 @@ def main():
     args = parser.parse_args()
 
     # Parse arguments
-    indir = os.path.split(args.inputpath)[0]
-    if not os.path.exists(indir):
-        sys.exit(f'Input directory {indir} does not exist')
-
-    if os.path.splitext(args.outputpath)[1] != '':
-        outdir = os.path.split(args.outputpath)[0]
-    else:
-        outdir = args.outputpath
-
-    if not os.path.exists(outdir):
-        os.makedirs(outdir)
+    if bbb.formats[args.outputformat].parser_type == bbb.ParserType.MULTI_FILE:
+        out = Path(args.outputpath)
+        if not out.is_dir() and len(out.suffixes) > 0:
+            log.error(f'Output format [{args.outputformat}] requires a path to a directory')
+            sys.exit(1)
+        if not out.exists():
+            log.info(f'[{args.outputformat}] folder does not exist, creating...')
+            os.makedirs(out)
 
     # Convert
     bbox = bbb.parse(args.inputformat, args.inputpath, stride=args.stride, offset=args.offset, **args.kwargs)

@@ -146,6 +146,9 @@ def generate(fmt, box, path, **kwargs):
     if parser.parser_type == ParserType.SINGLE_FILE:
         if os.path.isdir(path):
             path = os.path.join(path, 'boxes' + parser.extension)
+        elif len(os.path.splitext(path)[1]) == 0:
+            path += parser.extension
+
         with open(path, parser.write_mode) as f:
             f.write(parser.serialize(box))
     elif parser.parser_type == ParserType.MULTI_FILE:
