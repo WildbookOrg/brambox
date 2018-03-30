@@ -13,7 +13,7 @@ from ..statistics.util import match_detection_to_annotations
 
 __all__ = [
     'filter_ignore', 'filter_discard', 'filter_split',
-    'ImageBoundsFilter', 'OcclusionAreaFilter', 'HeightRangeFilter'
+    'ImageBoundsFilter', 'OcclusionAreaFilter', 'HeightRangeFilter', 'ClassLabelFilter', 'MatchFilter'
 ]
 
 
