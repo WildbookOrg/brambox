@@ -70,9 +70,14 @@ def draw_boxes(img, boxes, color=None, show_labels=False, faded=None, method=1):
         else:
             method = draw_boxes.METHOD_PIL
             original = Image.open(img)
+            if original.mode == 'L':
+                original = original.convert('RGB')
             img = ImageDraw.Draw(original)
     elif isinstance(img, Image.Image):
-        original = img
+        if img.mode == 'L':
+            original = img.convert('RGB')
+        else:
+            original = img
         img = ImageDraw.Draw(original)
         method = draw_boxes.METHOD_PIL
     elif cv2 is not None and isinstance(img, np.ndarray):
