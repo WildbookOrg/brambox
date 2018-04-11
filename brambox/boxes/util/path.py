@@ -63,12 +63,12 @@ def expand(expr, stride=1, offset=0):
 
         - a file itself -> return filename
         - a directory -> return files from directory and subdirectories (recursive)
-        - path with **'*'** wildcard -> return globbed files (recursive if **'\*\*'** is used)
+        - path with **'*'** wildcard -> return globbed files (recursive if **'\\*\\*'** is used)
         - path with **'%d'** wildcard -> return incremental files
 
     Warning:
-        If you use **'*'** wildcards in your expression, this function glob it recursively,
-        meaning **'\*\*'** wildcards will go down through all the subdirectories.
+        If you use **'\\*'** wildcards in your expression, this function glob it recursively,
+        meaning **'\\*\\*'** wildcards will go down through all the subdirectories.
         If the folder contains symlinked loops, this will cause this function to generate the same files over and over again.
     """
     if os.path.isdir(expr):
