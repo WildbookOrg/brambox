@@ -49,8 +49,8 @@ def parse(fmt, box_file, identify=None, offset=0, stride=1, **kwargs):
     if type(fmt) is str:
         try:
             parser = formats[fmt](**kwargs)
-        except KeyError:
-            raise TypeError(f'Invalid parser {fmt}')
+        except KeyError as err:
+            raise TypeError(f'Invalid parser {fmt}') from err
     elif issubclass(fmt, Parser):
         parser = fmt(**kwargs)
     else:
@@ -135,8 +135,8 @@ def generate(fmt, box, path, **kwargs):
     if type(fmt) is str:
         try:
             parser = formats[fmt](**kwargs)
-        except KeyError:
-            raise TypeError(f'Invalid parser {fmt}')
+        except KeyError as err:
+            raise TypeError(f'Invalid parser {fmt}') from err
     elif issubclass(fmt, Parser):
         parser = fmt(**kwargs)
     else:
