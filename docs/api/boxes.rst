@@ -8,9 +8,9 @@ The boxes module has a few dictionaries that contain references to all the suppo
 .. dict:: brambox.boxes detection_formats
 .. dict:: brambox.boxes formats 
 
-.. autoclass:: brambox.boxes.box.Box
+.. autoclass:: brambox.boxes.Box
    :members:
-.. autoclass:: brambox.boxes.box.ParserType
+.. autoclass:: brambox.boxes.ParserType
    :members:
 .. autoclass:: brambox.boxes.box.Parser
    :members:

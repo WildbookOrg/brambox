@@ -1,7 +1,7 @@
 Detections
 ==========
 .. automodule:: brambox.boxes.detections
-.. autoclass:: brambox.boxes.detections.Detection
+.. autoclass:: brambox.boxes.Detection
    :members:
 
 .. automodule:: brambox.boxes.detections.coco
