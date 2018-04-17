@@ -5,25 +5,31 @@ from brambox.boxes.annotations import YamlAnnotation, YamlParser
 yaml_string = """img_1:
   '?':
   - coords: [0, 0, 0, 0]
+    difficult: false
     lost: false
     occluded_fraction: 0.0
     truncated_fraction: 0.0
   person:
   - coords: [0, 0, 0, 0]
+    difficult: true
+    id: 1
     lost: false
     occluded_fraction: 0.0
     truncated_fraction: 0.0
 img_2:
   '?':
   - coords: [0, 0, 0, 0]
+    difficult: false
     lost: false
     occluded_fraction: 0.0
     truncated_fraction: 0.0
   - coords: [0, 0, 0, 0]
+    difficult: false
     lost: false
     occluded_fraction: 0.0
     truncated_fraction: 0.0
   - coords: [0, 0, 0, 0]
+    difficult: false
     lost: false
     occluded_fraction: 0.0
     truncated_fraction: 0.0
@@ -51,11 +57,14 @@ class TestYamlAnnotation(unittest.TestCase):
         self.assertEqual(key, 'person')
         self.assertEqual(val['coords'], [10, 20, 30, 40])
         self.assertTrue(val['lost'])
+        self.assertFalse(val['difficult'])
         self.assertEqual(val['occluded_fraction'], 0.0)
 
     def test_deserialize(self):
         """ test if deserialization of one annotation works """
-        self.anno.deserialize({'coords': [10, 20, 30, 40], 'lost': True, 'occluded_fraction': 70.0, 'truncated_fraction': 0.0}, 'person')
+        self.anno.deserialize({'coords': [10, 20, 30, 40], 'difficult': True, 'id': 1, 'lost': True, 'occluded_fraction': 70.0, 'truncated_fraction': 0.0}, 'person')
+        self.assertEqual(self.anno.class_label, 'person')
+        self.assertEqual(self.anno.object_id, 1)
         self.assertEqual(self.anno.x_top_left, 10)
         self.assertEqual(self.anno.y_top_left, 20)
         self.assertEqual(self.anno.width, 30)
@@ -64,6 +73,7 @@ class TestYamlAnnotation(unittest.TestCase):
         self.assertEqual(self.anno.truncated_fraction, 0.0)
         self.assertTrue(self.anno.occluded)
         self.assertTrue(self.anno.lost)
+        self.assertTrue(self.anno.difficult)
 
 
 class TestYamlParser(unittest.TestCase):
@@ -78,6 +88,8 @@ class TestYamlParser(unittest.TestCase):
         testanno1 = Annotation()
         testanno2 = Annotation()
         testanno2.class_label = 'person'
+        testanno2.object_id = 1
+        testanno2.difficult = True
         obj = {'img_1': [testanno1, testanno2], 'img_2': [testanno1, testanno1, testanno1]}
 
         string = self.parser.serialize(obj)

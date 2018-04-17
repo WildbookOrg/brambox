@@ -8,6 +8,7 @@ yaml_string = """img_1:
     score: 0.0
   person:
   - coords: [0, 0, 0, 0]
+    id: 1
     score: 90.0
 img_2:
   '?':
@@ -44,8 +45,10 @@ class TestYamlDetection(unittest.TestCase):
 
     def test_deserialize(self):
         """ test if deserialization of one detection works """
-        self.det.deserialize({'coords': [10, 20, 30, 40], 'score': 12.34}, 'person')
+        self.det.deserialize({'coords': [10, 20, 30, 40], 'id': 1, 'score': 12.34}, 'person')
 
+        self.assertEqual(self.det.class_label, 'person')
+        self.assertEqual(self.det.object_id, 1)
         self.assertEqual(self.det.x_top_left, 10)
         self.assertEqual(self.det.y_top_left, 20)
         self.assertEqual(self.det.width, 30)
@@ -65,6 +68,7 @@ class TestYamlParser(unittest.TestCase):
         testdet1 = Detection()
         testdet2 = Detection()
         testdet2.class_label = 'person'
+        testdet2.object_id = 1
         testdet2.confidence = .90
         obj = {'img_1': [testdet1, testdet2], 'img_2': [testdet1, testdet1, testdet1]}
 
@@ -78,6 +82,7 @@ class TestYamlParser(unittest.TestCase):
         self.assertEqual(type(obj['img_1']), list)
         self.assertEqual(len(obj['img_2']), 3)
         self.assertEqual(obj['img_1'][1].class_label, 'person')
+        self.assertEqual(obj['img_1'][1].object_id, 1)
         self.assertAlmostEqual(obj['img_1'][1].confidence, 0.9)
 
 
