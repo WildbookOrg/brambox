@@ -96,8 +96,6 @@ def draw_boxes(img, boxes, color=None, show_labels=False, faded=None, method=1):
         if isinstance(box, Annotation):
             if show_labels:
                 text = f'{box.class_label}{" "+str(box.object_id) if box.object_id is not None else ""}'
-            if box.lost:
-                continue
         elif isinstance(box, Detection):
             if show_labels:
                 text = f'{box.class_label}{" "+str(box.object_id) if box.object_id is not None else ""}|{100*box.confidence:.2f}%'

@@ -89,40 +89,6 @@ class TestDrawBoxes(unittest.TestCase):
 
         self.assertEqual(list(res.getdata()), list(img.getdata()))
 
-    def test_draw_lost(self):
-        """ Test drawing functions with lost annotations """
-        anno1 = bbb.Annotation()
-        anno1.x_top_left = 1
-        anno1.y_top_left = 1
-        anno1.width = 3
-        anno1.height = 3
-        anno2 = bbb.Annotation()
-        anno2.x_top_left = 5
-        anno2.y_top_left = 1
-        anno2.width = 3
-        anno2.height = 3
-        anno3 = bbb.Annotation()
-        anno3.lost = True
-        anno3.x_top_left = 1
-        anno3.y_top_left = 5
-        anno3.width = 3
-        anno3.height = 3
-        anno4 = bbb.Annotation()
-        anno4.x_top_left = 5
-        anno4.y_top_left = 5
-        anno4.width = 3
-        anno4.height = 3
-
-        img = Image.new('RGB', (10, 10))
-        res = bbb.draw_boxes(img.copy(), [anno1, anno2, anno3, anno4], (255, 0, 0))
-
-        imgdraw = ImageDraw.Draw(img)
-        imgdraw.line([(1, 1), (4, 1), (4, 4), (1, 4), (1, 1)], (255, 0, 0), 3)
-        imgdraw.line([(5, 1), (8, 1), (8, 4), (5, 4), (5, 1)], (255, 0, 0), 3)
-        imgdraw.line([(5, 5), (8, 5), (8, 8), (5, 8), (5, 5)], (255, 0, 0), 3)
-
-        self.assertEqual(list(res.getdata()), list(img.getdata()))
-
     def test_draw_color_cycle(self):
         """ Test color cycle """
         anno1 = bbb.Annotation()
