@@ -15,16 +15,17 @@ __all__ = ["YamlDetection", "YamlParser"]
 
 class YamlDetection(Detection):
     """ YAML image detection """
-
     def serialize(self):
         """ generate a yaml detection object """
         class_label = '?' if self.class_label == '' else self.class_label
-        return (class_label,
-                {
-                    'coords': [round(self.x_top_left), round(self.y_top_left), round(self.width), round(self.height)],
-                    'score': self.confidence*100,
-                }
-                )
+        obj = {
+            'coords': [int(self.x_top_left), int(self.y_top_left), int(self.width), int(self.height)],
+            'score': self.confidence*100,
+        }
+        if self.object_id is not None:
+            obj['id'] = self.object_id
+
+        return (class_label, obj)
 
     def deserialize(self, yaml_obj, class_label):
         """ parse a yaml detection object """
@@ -34,8 +35,8 @@ class YamlDetection(Detection):
         self.width = float(yaml_obj['coords'][2])
         self.height = float(yaml_obj['coords'][3])
         self.confidence = yaml_obj['score'] / 100
-
-        self.object_id = 0
+        if 'id' in yaml_obj:
+            self.object_id = yaml_obj['id']
 
 
 class YamlParser(Parser):
@@ -51,8 +52,10 @@ class YamlParser(Parser):
                   score: 56.76
               person:
                 - coords: [x,y,w,h]
+                  id: 1
                   score: 90.1294132
                 - coords: [x,y,w,h]
+                  id: 2
                   score: 12.120
             img2:
               car:

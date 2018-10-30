@@ -9,6 +9,11 @@ These modifier functions allow to change certain aspects of your annotations and
 import collections
 from ..annotations import Annotation
 
+__all__ = [
+    'modify',
+    'AspectRatioModifier', 'ScaleModifier', 'CropModifier'
+]
+
 
 def modify(boxes, modifier_fns):
     """ Modifies boxes according to the modifier functions.

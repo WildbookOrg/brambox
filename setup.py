@@ -1,5 +1,12 @@
 import setuptools as setup
+from pkg_resources import get_distribution, DistributionNotFound
 
+
+def get_dist(pkgname):
+    try:
+        return get_distribution(pkgname)
+    except DistributionNotFound:
+        return None
 
 def find_packages():
     return ['brambox'] + ['brambox.'+p for p in setup.find_packages('brambox')]
@@ -21,19 +28,24 @@ def get_version():
 
     return version
 
-setup.setup(name='brambox',
-            version=get_version(),
-            author='EAVISE',
-            description='Unified tools for generating PR curves, crunshing image data annotation sets and more',
-            long_description=open('README.md').read(),
-            packages=find_packages(),
-            scripts=find_scripts(),
-            test_suite='tests',
-            install_requires=[
-                'pyyaml',
-                'numpy',
-                'scipy',
-                'Pillow',
-                'matplotlib',
-            ],
-            )
+
+requirements = [
+    'pyyaml',
+    'numpy',
+    'scipy',
+    'matplotlib',
+]
+pillow_req = 'pillow-simd' if get_dist('pillow-simd') is not None else 'pillow'
+requirements.append(pillow_req)
+
+setup.setup(
+    name='brambox',
+    version=get_version(),
+    author='EAVISE',
+    description='Unified tools for generating PR curves, crunshing image data annotation sets and more',
+    long_description=open('README.md').read(),
+    packages=find_packages(),
+    scripts=find_scripts(),
+    test_suite='tests',
+    install_requires=requirements,
+)

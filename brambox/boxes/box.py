@@ -13,7 +13,7 @@ class Box:
 
     Attributes:
         class_label (string): class string label; Default **''**
-        object_id (int): Object identifier for reid purposes; Default **0**
+        object_id (int): Object identifier for reid purposes; Default **None**
         x_top_left (Number): X pixel coordinate of the top left corner of the bounding box; Default **0.0**
         y_top_left (Number): Y pixel coordinate of the top left corner of the bounding box; Default **0.0**
         width (Number): Width of the bounding box in pixels; Default **0.0**
@@ -21,7 +21,7 @@ class Box:
     """
     def __init__(self):
         self.class_label = ''   # class string label
-        self.object_id = 0      # object identifier
+        self.object_id = None   # object identifier
         self.x_top_left = 0.0   # x pixel coordinate top left of the box
         self.y_top_left = 0.0   # y pixel coordinate top left of the box
         self.width = 0.0        # width of the box in pixels
@@ -100,8 +100,8 @@ class Parser:
 
         Note:
             The format of the box parameter depends on the type of parser. |br|
-            If it is a :any:`brambox.boxes.box.ParserType.SINGLE_FILE`, the box parameter should be a dictionary ``{"image_id": [box, box, ...], ...}``. |br|
-            If it is a :any:`brambox.boxes.box.ParserType.MULTI_FILE`, the box parameter should be a list ``[box, box, ...]``.
+            If it is a :any:`brambox.boxes.ParserType.SINGLE_FILE`, the box parameter should be a dictionary ``{"image_id": [box, box, ...], ...}``. |br|
+            If it is a :any:`brambox.boxes.ParserType.MULTI_FILE`, the box parameter should be a list ``[box, box, ...]``.
         """
         if self.parser_type != ParserType.MULTI_FILE:
             raise TypeError('The default implementation of serialize only works with MULTI_FILE')
@@ -125,8 +125,8 @@ class Parser:
 
         Note:
             The format of the box return value depends on the type of parser. |br|
-            If it is a :any:`brambox.boxes.box.ParserType.SINGLE_FILE`, the return value should be a dictionary ``{"image_id": [box, box, ...], ...}``. |br|
-            If it is a :any:`brambox.boxes.box.ParserType.MULTI_FILE`, the return value should be a list ``[box, box, ...]``.
+            If it is a :any:`brambox.boxes.ParserType.SINGLE_FILE`, the return value should be a dictionary ``{"image_id": [box, box, ...], ...}``. |br|
+            If it is a :any:`brambox.boxes.ParserType.MULTI_FILE`, the return value should be a list ``[box, box, ...]``.
         """
         if self.parser_type != ParserType.MULTI_FILE:
             raise TypeError('The default implementation of deserialize only works with MULTI_FILE')

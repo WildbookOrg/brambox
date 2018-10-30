@@ -45,8 +45,8 @@ class PascalVocAnnotation(Annotation):
         self.width = float(int(box.find('xmax').text) - self.x_top_left + 1)
         self.height = float(int(box.find('ymax').text) - self.y_top_left + 1)
 
-        self.object_id = 0
-        self.lost = None
+        self.object_id = None
+        self.lost = False
 
         return self
 

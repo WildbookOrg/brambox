@@ -58,7 +58,7 @@ class DarknetAnnotation(Annotation):
 
         self.occluded = False
         self.lost = False
-        self.object_id = 0
+        self.object_id = None
 
         return self
 
@@ -96,15 +96,15 @@ class DarknetParser(Parser):
             self.image_width = kwargs['image_width']
             if self.image_width is None:
                 raise KeyError
-        except KeyError:
-            raise ValueError("Darknet parser requires a 'image_width' kwarg.")
+        except KeyError as error:
+            raise ValueError("Darknet parser requires a 'image_width' kwarg.") from error
 
         try:
             self.image_height = kwargs['image_height']
             if self.image_height is None:
                 raise KeyError
-        except KeyError:
-            raise ValueError("Darknet parser requires a 'image_height' kwarg.")
+        except KeyError as error:
+            raise ValueError("Darknet parser requires a 'image_height' kwarg.") from error
 
         try:
             label_map = kwargs['class_label_map']
@@ -114,7 +114,7 @@ class DarknetParser(Parser):
             else:
                 self.class_label_map = label_map
         except KeyError:
-            log.info("No 'class_label_map' kwarg found, parser will use class_label_indices as class_labels.")
+            log.info("No 'class_label_map' kwarg found, parser will use indices as class_labels.")
             self.class_label_map = None
 
     def serialize(self, annotations):

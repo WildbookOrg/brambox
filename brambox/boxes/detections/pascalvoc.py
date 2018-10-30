@@ -30,7 +30,7 @@ class PascalVocDetection(Detection):
         self.width = float(elements[4]) - self.x_top_left + 1
         self.height = float(elements[5]) - self.y_top_left + 1
 
-        self.object_id = 0
+        self.object_id = None
 
         return elements[0]
 
@@ -67,7 +67,9 @@ class PascalVocParser(Parser):
             self.class_label = ''
 
     def serialize(self, detections):
-        """ Serialize input dictionary of detections into one string """
+        """ **NOT IMPLEMENTED** |br|
+            Serialize input dictionary of detections into one string
+        """
         raise NotImplementedError
 
     def deserialize(self, string):

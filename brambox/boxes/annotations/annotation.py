@@ -125,7 +125,7 @@ class Annotation(b.Box):
     def __str__(self):
         """ Pretty print """
         string = 'Annotation {'
-        string += f'\'{self.class_label}\' {self.object_id}, '
+        string += f'\'{self.class_label}\'{"" if self.object_id is None else " "+str(self.object_id)}, '
         string += f'[{int(self.x_top_left)}, {int(self.y_top_left)}, {int(self.width)}, {int(self.height)}]'
         if self.difficult:
             string += ', difficult'

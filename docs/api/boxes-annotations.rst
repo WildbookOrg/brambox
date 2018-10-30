@@ -1,7 +1,7 @@
 Annotations
 ===========
 .. automodule:: brambox.boxes.annotations
-.. autoclass:: brambox.boxes.annotations.Annotation
+.. autoclass:: brambox.boxes.Annotation
    :members:
 
 .. automodule:: brambox.boxes.annotations.cvc

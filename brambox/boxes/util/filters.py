@@ -11,6 +11,11 @@ import copy
 from ..statistics import *
 from ..statistics.util import match_detection_to_annotations
 
+__all__ = [
+    'filter_ignore', 'filter_discard', 'filter_split',
+    'ImageBoundsFilter', 'OcclusionAreaFilter', 'HeightRangeFilter', 'ClassLabelFilter', 'MatchFilter'
+]
+
 
 def filter_ignore(annotations, filter_fns):
     """ Set the ``ignore`` attribute of the annotations to **True** when they do not pass the provided filter functions.

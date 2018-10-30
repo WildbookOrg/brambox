@@ -223,7 +223,7 @@ def main():
     plt.rcParams['keymap.save'].remove('s')
     plt.rcParams['keymap.xscale'] = []
     plt.rcParams['keymap.yscale'] = []
-    fig = plt.figure('Brambox Bounding Boxes')
+    fig = plt.figure('Brambox Comparator')
     ax = fig.gca()
     ax.axes.get_xaxis().set_visible(False)
     ax.axes.get_yaxis().set_visible(False)

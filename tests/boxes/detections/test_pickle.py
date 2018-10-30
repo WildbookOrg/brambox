@@ -3,14 +3,14 @@ from brambox.boxes.detections.detection import Detection
 from brambox.boxes.detections import PickleParser
 
 
-class TestPickleDetection(unittest.TestCase):
+class TestPickleParser(unittest.TestCase):
     def setUp(self):
         self.parser = PickleParser()
 
     def tearDown(self):
         pass
 
-    def test_parser_serialize_deserialize(self):
+    def test_serialize_deserialize(self):
         """ test basic serialization/deserialization with parser """
         testanno1 = Detection()
         testanno2 = Detection()

@@ -35,7 +35,7 @@ class CocoDetection(Detection):
         self.height = float(json_obj['bbox'][3])
         self.confidence = json_obj['score']
 
-        self.object_id = 0
+        self.object_id = None
 
 
 class CocoParser(Parser):
@@ -79,8 +79,9 @@ class CocoParser(Parser):
             raise ValueError("Coco detection format requires a 'class_label_map' kwarg")
 
     def serialize(self, detections):
-        """ Serialize input detection to a json string """
-
+        """ **NOT IMPLEMENTED** |br|
+            Serialize input detection to a json string
+        """
         raise NotImplementedError
 
     def deserialize(self, string):

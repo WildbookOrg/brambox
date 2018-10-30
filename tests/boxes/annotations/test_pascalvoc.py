@@ -49,12 +49,11 @@ xml_single_string = """<object>
 class TestPascalVocAnnotation(unittest.TestCase):
     def setUp(self):
         self.anno = PascalVocAnnotation()
-        self.parser = PascalVocParser()
 
     def tearDown(self):
         pass
 
-    def test_anno_serialize(self):
+    def test_serialize(self):
         """ test if serialization of one annotation works """
         self.anno.class_label = 'person'
         self.anno.x_top_left = 10
@@ -68,7 +67,7 @@ class TestPascalVocAnnotation(unittest.TestCase):
         string = self.anno.serialize()
         self.assertEqual(string, xml_single_string)
 
-    def test_anno_deserialize(self):
+    def test_deserialize(self):
         """ test if deserialization of one annotation works """
         self.anno.deserialize(ET.fromstring(xml_single_string))
         self.assertEqual(self.anno.x_top_left, 10)
@@ -78,7 +77,15 @@ class TestPascalVocAnnotation(unittest.TestCase):
         self.assertTrue(self.anno.occluded)
         self.assertFalse(self.anno.lost)
 
-    def test_parser_serialize(self):
+
+class TestPascalVocParser(unittest.TestCase):
+    def setUp(self):
+        self.parser = PascalVocParser()
+
+    def tearDown(self):
+        pass
+
+    def test_serialize(self):
         """ test basic serialization with parser """
         testanno1 = Annotation()
         testanno1.class_label = 'horse'
@@ -98,7 +105,7 @@ class TestPascalVocAnnotation(unittest.TestCase):
         string = self.parser.serialize([testanno1, testanno2])
         self.assertEqual(string, xml_string)
 
-    def test_parser_deserialize(self):
+    def test_deserialize(self):
         """ test basic deserialization with parser """
         obj = self.parser.deserialize(xml_string)
         self.assertEqual(type(obj), list)

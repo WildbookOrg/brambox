@@ -28,16 +28,16 @@ def parse(fmt, box_file, identify=None, offset=0, stride=1, **kwargs):
 
     Note:
         The ``identify`` function will be used to generate ``image_id`` tags. |br|
-        If the format is of the type :any:`brambox.boxes.box.ParserType.SINGLE_FILE`,
+        If the format is of the type :any:`brambox.boxes.ParserType.SINGLE_FILE`,
         the identify function gets the existing ``image_id`` tags as input. The default is to not change the tags. |br|
-        If the format is of the type :any:`brambox.boxes.box.ParserType.MULTI_FILE`,
+        If the format is of the type :any:`brambox.boxes.ParserType.MULTI_FILE`,
         the identify function gets the path of the current file as input. The default is to get the name of the file without extensions.
 
     Warning:
         The ``box_file`` parameter can be either a list or string. |br|
-        If the format is of the type :any:`brambox.boxes.box.ParserType.SINGLE_FILE`,
+        If the format is of the type :any:`brambox.boxes.ParserType.SINGLE_FILE`,
         then only a string is accepted and this is used as the filename. |br|
-        If the format is of the type :any:`brambox.boxes.box.ParserType.MULTI_FILE`,
+        If the format is of the type :any:`brambox.boxes.ParserType.MULTI_FILE`,
         then you can either pass a list or a string.
         A list will be used as is, namely every string of the list gets used as a filename.
         If you use a string, it will first be expanded with the :func:`~brambox.boxes.expand` function
@@ -49,8 +49,8 @@ def parse(fmt, box_file, identify=None, offset=0, stride=1, **kwargs):
     if type(fmt) is str:
         try:
             parser = formats[fmt](**kwargs)
-        except KeyError:
-            raise TypeError(f'Invalid parser {fmt}')
+        except KeyError as err:
+            raise TypeError(f'Invalid parser {fmt}') from err
     elif issubclass(fmt, Parser):
         parser = fmt(**kwargs)
     else:
@@ -125,9 +125,9 @@ def generate(fmt, box, path, **kwargs):
         **kwargs (dict): Keyword arguments that are passed to the parser
 
     Warning:
-        If the format is of the type :any:`brambox.boxes.box.ParserType.SINGLE_FILE`,
+        If the format is of the type :any:`brambox.boxes.ParserType.SINGLE_FILE`,
         then the ``path`` parameter should contain a path to a **file**. |br|
-        If the format is of the type :any:`brambox.boxes.box.ParserType.MULTI_FILE`,
+        If the format is of the type :any:`brambox.boxes.ParserType.MULTI_FILE`,
         then the ``path`` parameter should contain a path to a **folder**.
     """
 
@@ -135,8 +135,8 @@ def generate(fmt, box, path, **kwargs):
     if type(fmt) is str:
         try:
             parser = formats[fmt](**kwargs)
-        except KeyError:
-            raise TypeError(f'Invalid parser {fmt}')
+        except KeyError as err:
+            raise TypeError(f'Invalid parser {fmt}') from err
     elif issubclass(fmt, Parser):
         parser = fmt(**kwargs)
     else:
@@ -146,6 +146,9 @@ def generate(fmt, box, path, **kwargs):
     if parser.parser_type == ParserType.SINGLE_FILE:
         if os.path.isdir(path):
             path = os.path.join(path, 'boxes' + parser.extension)
+        elif len(os.path.splitext(path)[1]) == 0:
+            path += parser.extension
+
         with open(path, parser.write_mode) as f:
             f.write(parser.serialize(box))
     elif parser.parser_type == ParserType.MULTI_FILE:

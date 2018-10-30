@@ -19,14 +19,17 @@ class YamlAnnotation(Annotation):
     def serialize(self):
         """ generate a yaml annotation object """
         class_label = '?' if self.class_label == '' else self.class_label
-        return (class_label,
-                {
-                    'coords': [round(self.x_top_left), round(self.y_top_left), round(self.width), round(self.height)],
-                    'lost': self.lost,
-                    'occluded_fraction': self.occluded_fraction*100,
-                    'truncated_fraction': self.truncated_fraction*100,
-                }
-                )
+        obj = {
+            'coords': [int(self.x_top_left), int(self.y_top_left), int(self.width), int(self.height)],
+            'lost': self.lost,
+            'difficult': self.difficult,
+            'occluded_fraction': self.occluded_fraction*100,
+            'truncated_fraction': self.truncated_fraction*100,
+        }
+        if self.object_id is not None:
+            obj['id'] = self.object_id
+
+        return (class_label, obj)
 
     def deserialize(self, yaml_obj, class_label):
         """ parse a yaml annotation object """
@@ -36,6 +39,8 @@ class YamlAnnotation(Annotation):
         self.width = float(yaml_obj['coords'][2])
         self.height = float(yaml_obj['coords'][3])
         self.lost = yaml_obj['lost']
+        if 'id' in yaml_obj:
+            self.object_id = yaml_obj['id']
 
         if 'occluded_fraction' not in yaml_obj:    # Backward compatible with older versions
             log.deprecated('You are using an old yaml format that will be deprecated in newer versions. Consider to save your annotations with the new format.')
@@ -49,7 +54,11 @@ class YamlAnnotation(Annotation):
         else:
             self.truncated_fraction = yaml_obj['truncated_fraction']/100
 
-        self.object_id = 0
+        if 'difficult' not in yaml_obj:
+            log.deprecated('You are using an old yaml format that will be deprecated in newer versions. Consider to save your annotations with the new format.')
+            self.difficult = False
+        else:
+            self.difficult = yaml_obj['difficult']
 
 
 class YamlParser(Parser):
@@ -63,21 +72,27 @@ class YamlParser(Parser):
               car:
                 - coords: [x,y,w,h]
                   lost: False
+                  difficult: True
                   occluded_fraction: 50.123
                   truncated_fraction: 0.0
               person:
-                - coords: [x,y,w,h]
+                - id: 1
+                  coords: [x,y,w,h]
                   lost: False
+                  difficult: False
                   occluded_fraction: 0.0
                   truncated_fraction: 10.0
-                - coords: [x,y,w,h]
+                - id: 2
+                  coords: [x,y,w,h]
                   lost: False
+                  difficult: False
                   occluded_fraction: 0.0
                   truncated_fraction: 0.0
             img2:
               car:
                 - coords: [x,y,w,h]
                   lost: True
+                  difficult: False
                   occluded_fraction: 90.0
                   truncated_fraction: 76.0
     """

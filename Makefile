@@ -6,7 +6,7 @@ test:
 lint:
 	$(PYTHON) pycodestyle --max-line-length=250 ./brambox/ && \
 	$(PYTHON) pycodestyle --max-line-length=250 ./scripts/ && \
-	$(PYTHON) pycodestyle --max-line-length=250 ./tests/
+	$(PYTHON) pycodestyle --max-line-length=400 ./tests/
 
 coverage:
 	$(PYTHON) coverage report

@@ -27,7 +27,7 @@ if 'BB_LOGLVL' in os.environ:
     ch.setLevel(os.environ['BB_LOGLVL'])
 else:
     ch.setLevel(logging.INFO)
-ch.setFormatter(logging.Formatter('%(levelname)s [%(name)s]  %(message)s'))
+ch.setFormatter(logging.Formatter('{levelname:10} [{name}] {message}', style='{'))
 set_log_level = ch.setLevel
 
 # Logger

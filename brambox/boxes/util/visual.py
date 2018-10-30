@@ -33,7 +33,7 @@ def draw_boxes(img, boxes, color=None, show_labels=False, faded=None, method=1):
     Args:
         img (OpenCV image or PIL image or filename): Image to draw on
         boxes (list): Bounding boxes to draw
-        color (dict or list, optional): Color to use for drawing; Default **every label will get its own color, up to 8 labels**
+        color (dict or list, optional): Color to use for drawing; Default **every label will get its own color, up to 10 labels**
         show_labels (Boolean, optional): Whether or not to print the label names; Default **False**
         faded (function, optional): Function that determines whether we draw an annotation faded or not; Default **None**
         method (draw_boxes.METHOD_CV or draw_boxes.METHOD_PIL, optional): Whether to use OpenCV or Pillow for opening the image (only useful when filename given); Default: **draw_boxes.METHOD_PIL**
@@ -46,30 +46,38 @@ def draw_boxes(img, boxes, color=None, show_labels=False, faded=None, method=1):
         If it is a dictionary, the keys represent the different class labels to draw
         and the values are the different RGB colors. |br|
         If no ``color`` parameter is given, the function will give every label its own color,
-        by selecting colors from a list of 8 different colors.
+        by selecting colors from a list of 10 different colors.
     """
     default_colors = [
-        (255, 0, 0),
-        (0, 0, 255),
-        (0, 255, 0),
-        (255, 0, 255),
-        (0, 255, 255),
-        (255, 255, 0),
-        (255, 255, 255),
-        (0, 0, 0)
+        (31, 119, 180),
+        (255, 127, 14),
+        (44, 160, 44),
+        (214, 39, 40),
+        (148, 103, 189),
+        (140, 86, 75),
+        (227, 119, 194),
+        (127, 127, 127),
+        (188, 189, 34),
+        (23, 190, 207),
     ]
     if cv2 is None and method == draw_boxes.METHOD_CV:
         raise ImportError('opencv is not installed')
 
     # Open image
     if isinstance(img, str) or isinstance(img, Path):
-        if method == draw_boxes.METHOD_PIL:
-            original = Image.open(img)
-            img = ImageDraw.Draw(original)
-        else:
+        if method == draw_boxes.METHOD_CV:
             img = cv2.imread(img)
+        else:
+            method = draw_boxes.METHOD_PIL
+            original = Image.open(img)
+            if original.mode == 'L':
+                original = original.convert('RGB')
+            img = ImageDraw.Draw(original)
     elif isinstance(img, Image.Image):
-        original = img
+        if img.mode == 'L':
+            original = img.convert('RGB')
+        else:
+            original = img
         img = ImageDraw.Draw(original)
         method = draw_boxes.METHOD_PIL
     elif cv2 is not None and isinstance(img, np.ndarray):
@@ -83,23 +91,19 @@ def draw_boxes(img, boxes, color=None, show_labels=False, faded=None, method=1):
     color_counter = 0
     for box in boxes:
         text = None
-        special = False
 
         # Type specific
         if isinstance(box, Annotation):
-            if box.lost:
-                continue
-            if faded(box):
-                special = True
             if show_labels:
-                text = box.class_label
+                text = f'{box.class_label}{" "+str(box.object_id) if box.object_id is not None else ""}'
         elif isinstance(box, Detection):
-            if faded(box):
-                special = True
             if show_labels:
-                text = f'{box.class_label} {100*box.confidence:.2f}%'
+                text = f'{box.class_label}{" "+str(box.object_id) if box.object_id is not None else ""}|{100*box.confidence:.2f}%'
         else:
             continue
+
+        # Faded
+        special = True if faded(box) else False
 
         # Color
         if color is None:
