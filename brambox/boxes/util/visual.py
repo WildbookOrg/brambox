@@ -23,7 +23,7 @@ __all__ = ['draw_boxes']
 
 try:
     font = ImageFont.truetype('/usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf', 10)
-except (OSError, FileNotFoundError):
+except (FileNotFoundError, OSError):
     font = ImageFont.load_default()
 
 
@@ -70,11 +70,11 @@ def draw_boxes(img, boxes, color=None, show_labels=False, faded=None, method=1):
         else:
             method = draw_boxes.METHOD_PIL
             original = Image.open(img)
-            if original.mode == 'L':
+            if original.mode not in ('RGB', 'RGBA'):
                 original = original.convert('RGB')
             img = ImageDraw.Draw(original)
     elif isinstance(img, Image.Image):
-        if img.mode == 'L':
+        if img.mode not in ('RGB', 'RGBA'):
             original = img.convert('RGB')
         else:
             original = img
