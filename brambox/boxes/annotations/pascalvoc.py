@@ -38,6 +38,7 @@ class PascalVocAnnotation(Annotation):
         self.class_label = xml_obj.find('name').text
         self.occluded = xml_obj.find('truncated').text == '1'
         self.difficult = xml_obj.find('difficult').text == '1'
+        self.interest = xml_obj.find('interest').text == '1'
 
         box = xml_obj.find('bndbox')
         self.x_top_left = float(box.find('xmin').text)

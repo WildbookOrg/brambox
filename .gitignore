@@ -12,3 +12,5 @@ brambox.egg-info
 __pycache__
 .idea/
 *.html
+.DS_Store
+

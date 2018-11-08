@@ -17,6 +17,7 @@ class Annotation(b.Box):
     Attributes:
         lost (Boolean): Flag indicating whether the annotation is visible in the image; Default **False**
         difficult (Boolean): Flag indicating whether the annotation is considered difficult; Default **False**
+        interest (Boolean): Flag indicating whether the annotation is an Annotation of Interest (AoI); Default **False**
         occluded (Boolean): Flag indicating whether the annotation is occluded; Default **False**
         ignore (Boolean): Flag that is used to ignore a bounding box during statistics processing; Default **False**
         occluded_fraction (Number): value between 0 and 1 that indicates the amount of occlusion (1 = completely occluded); Default **0.0**
@@ -38,6 +39,7 @@ class Annotation(b.Box):
         super(Annotation, self).__init__()
         self.lost = False               # if object is not seen in the image, if true one must ignore this annotation
         self.difficult = False          # if the object is considered difficult
+        self.interest = False          # if the object is an Annotation of Interest (AoI)
         self.ignore = False             # if true, this bounding box will not be considered in statistics processing
         self.occluded_fraction = 0.0   # value between 0 and 1 that indicates how much an object is occluded
         self.truncated_fraction = 0.0   # value between 0 and 1 that indicates how much an object is truncated
@@ -84,6 +86,7 @@ class Annotation(b.Box):
         if isinstance(obj, Annotation):
             instance.lost = obj.lost
             instance.difficult = obj.difficult
+            instance.interest = obj.interest
             instance.ignore = obj.ignore
             instance.truncated_fraction = obj.truncated_fraction
             instance.occluded_fraction = obj.occluded_fraction
@@ -94,6 +97,7 @@ class Annotation(b.Box):
         elif isinstance(obj, det.Detection):
             instance.lost = False
             instance.difficult = False
+            instance.interest = False
             instance.occluded = False
             instance.visible_x_top_left = 0.0
             instance.visible_y_top_left = 0.0
@@ -114,6 +118,7 @@ class Annotation(b.Box):
         string += f'ignore = {self.ignore}, '
         string += f'lost = {self.lost}, '
         string += f'difficult = {self.difficult}, '
+        string += f'interest = {self.interest}, '
         string += f'truncated_fraction = {self.truncated_fraction}, '
         string += f'occluded_fraction = {self.occluded_fraction}, '
         string += f'visible_x = {self.visible_x_top_left}, '
@@ -129,6 +134,8 @@ class Annotation(b.Box):
         string += f'[{int(self.x_top_left)}, {int(self.y_top_left)}, {int(self.width)}, {int(self.height)}]'
         if self.difficult:
             string += ', difficult'
+        if self.interest:
+            string += ', interest'
         if self.lost:
             string += ', lost'
         if self.ignore:
