@@ -65,7 +65,7 @@ class Detection(b.Box):
         string += f', {round(self.confidence*100, 2)}%'
         return string + '}'
 
-    def serialize(self):
+    def serialize(self, return_dict=False):
         import json
         serialize_dict = {
             'l': self.class_label,
@@ -76,12 +76,19 @@ class Detection(b.Box):
             'h': self.height,
             'c': self.confidence,
         }
-        serialize_str = json.dumps(string_)
-        return serialize_str
+        if return_dict:
+            return serialize_dict
+        else:
+            serialize_str = json.dumps(serialize_dict)
+            return serialize_str
 
-    def deserialize(self, serialize_str):
+    def deserialize(self, serialize_str, input_dict=False):
         import json
-        serialize_dict = json.loads(serialize_str)
+        if input_dict:
+            assert isinstance(serialize_str, dict)
+            serialize_dict = serialize_str
+        else:
+            serialize_dict = json.loads(serialize_str)
         self.class_label = serialize_dict['l']
         self.object_id   = serialize_dict['i']
         self.x_top_left  = serialize_dict['x']
