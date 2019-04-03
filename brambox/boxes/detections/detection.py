@@ -67,35 +67,35 @@ class Detection(b.Box):
 
     def serialize(self, return_dict=False):
         import json
-        serialize_dict = {
-            'l': self.class_label,
-            'i': self.object_id,
-            'x': self.x_top_left,
-            'y': self.y_top_left,
-            'w': self.width,
-            'h': self.height,
-            'c': self.confidence,
-        }
+        serialize_list = [
+            self.class_label,
+            self.object_id,
+            self.x_top_left,
+            self.y_top_left,
+            self.width,
+            self.height,
+            self.confidence,
+        ]
         if return_dict:
-            return serialize_dict
+            return serialize_list
         else:
-            serialize_str = json.dumps(serialize_dict)
+            serialize_str = json.dumps(serialize_list)
             return serialize_str
 
     def deserialize(self, serialize_str, input_dict=False):
         import json
         if input_dict:
             assert isinstance(serialize_str, dict)
-            serialize_dict = serialize_str
+            serialize_list = serialize_str
         else:
-            serialize_dict = json.loads(serialize_str)
-        self.class_label = serialize_dict['l']
-        self.object_id   = serialize_dict['i']
-        self.x_top_left  = serialize_dict['x']
-        self.y_top_left  = serialize_dict['y']
-        self.width       = serialize_dict['w']
-        self.height      = serialize_dict['h']
-        self.confidence  = serialize_dict['c']
+            serialize_list = json.loads(serialize_str)
+        self.class_label = serialize_list[0]
+        self.object_id   = serialize_list[1]
+        self.x_top_left  = serialize_list[2]
+        self.y_top_left  = serialize_list[3]
+        self.width       = serialize_list[4]
+        self.height      = serialize_list[5]
+        self.confidence  = serialize_list[6]
         return True
 
 
