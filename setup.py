@@ -1,4 +1,4 @@
-import setuptools as setup
+from setuptools import findall, find_packages, setup
 from pkg_resources import get_distribution, DistributionNotFound
 
 
@@ -8,12 +8,8 @@ def get_dist(pkgname):
     except DistributionNotFound:
         return None
 
-def find_packages():
-    return ['brambox'] + ['brambox.'+p for p in setup.find_packages('brambox')]
-
-
 def find_scripts():
-    return setup.findall('scripts')
+    return findall('scripts')
 
 
 def get_version():
@@ -38,10 +34,12 @@ requirements = [
 pillow_req = 'pillow-simd' if get_dist('pillow-simd') is not None else 'pillow'
 requirements.append(pillow_req)
 
-setup.setup(
-    name='brambox',
+
+setup_kwargs = dict(
+    name='wbia-brambox',
     version=get_version(),
-    author='EAVISE',
+    author='EAVISE, WildMe Developers',
+    author_email='dev@wildme.org',
     description='Unified tools for generating PR curves, crunshing image data annotation sets and more',
     long_description=open('README.md').read(),
     packages=find_packages(),
@@ -49,3 +47,7 @@ setup.setup(
     test_suite='tests',
     install_requires=requirements,
 )
+
+
+if __name__ == '__main__':
+    setup(**setup_kwargs)
