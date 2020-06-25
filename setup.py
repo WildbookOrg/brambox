@@ -20,7 +20,7 @@ def get_version():
         f.write('# Brambox version: Automatically generated version file\n')
         f.write('# Copyright EAVISE\n')
         f.write('#\n\n')
-        f.write(f'__version__ = "{version}"\n')
+        f.write('__version__ = "{}"\n'.format(version))
 
     return version
 
