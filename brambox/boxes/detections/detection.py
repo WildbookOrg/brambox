@@ -18,10 +18,11 @@ class Detection(b.Box):
     Attributes:
         confidence (Number): confidence score between 0-1 for that detection; Default **0.0**
     """
+
     def __init__(self):
         """ x_top_left,y_top_left,width,height are in pixel coordinates """
         super(Detection, self).__init__()
-        self.confidence = 0.0       # Confidence score between 0-1
+        self.confidence = 0.0  # Confidence score between 0-1
 
     @classmethod
     def create(cls, obj=None):
@@ -68,6 +69,7 @@ class Detection(b.Box):
 
     def serialize(self, return_dict=False):
         import json
+
         serialize_list = [
             self.class_label,
             self.object_id,
@@ -85,18 +87,19 @@ class Detection(b.Box):
 
     def deserialize(self, serialize_str, input_dict=False):
         import json
+
         if input_dict:
             assert isinstance(serialize_str, dict)
             serialize_list = serialize_str
         else:
             serialize_list = json.loads(serialize_str)
         self.class_label = serialize_list[0]
-        self.object_id   = serialize_list[1]
-        self.x_top_left  = serialize_list[2]
-        self.y_top_left  = serialize_list[3]
-        self.width       = serialize_list[4]
-        self.height      = serialize_list[5]
-        self.confidence  = serialize_list[6]
+        self.object_id = serialize_list[1]
+        self.x_top_left = serialize_list[2]
+        self.y_top_left = serialize_list[3]
+        self.width = serialize_list[4]
+        self.height = serialize_list[5]
+        self.confidence = serialize_list[6]
         return True
 
 
@@ -105,4 +108,5 @@ ParserType = b.ParserType
 
 class Parser(b.Parser):
     """ Generic parser class """
-    box_type = Detection        # Derived classes should set the correct box_type
+
+    box_type = Detection  # Derived classes should set the correct box_type

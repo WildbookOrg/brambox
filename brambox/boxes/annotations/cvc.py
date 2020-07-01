@@ -15,18 +15,20 @@ __all__ = ['CvcAnnotation', 'CvcParser']
 
 class CvcAnnotation(Annotation):
     """ Cvc image annotation """
+
     def serialize(self):
         """ generate a cvc annotation string
 
         Note that this format does not support a class label
         """
         object_id = -1 if self.object_id is None else int(self.object_id)
-        string = '{} {} {} {} 1 0 0 0 0 {} 0' \
-            .format(round(self.x_top_left + self.width / 2),
-                    round(self.y_top_left + self.height / 2),
-                    round(self.width),
-                    round(self.height),
-                    object_id)
+        string = '{} {} {} {} 1 0 0 0 0 {} 0'.format(
+            round(self.x_top_left + self.width / 2),
+            round(self.y_top_left + self.height / 2),
+            round(self.width),
+            round(self.height),
+            object_id,
+        )
 
         return string
 
@@ -78,5 +80,6 @@ class CvcParser(Parser):
 
     .. _CVC: http://adas.cvc.uab.es/elektra/datasets/pedestrian-detection/
     """
+
     parser_type = ParserType.MULTI_FILE
     box_type = CvcAnnotation

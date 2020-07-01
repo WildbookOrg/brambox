@@ -16,6 +16,7 @@ log = logging.getLogger(__name__)
 
 class PascalVocDetection(Detection):
     """ Pascal VOC image detection """
+
     def serialize(self):
         """ generate a Pascal VOC detection string """
         raise NotImplementedError
@@ -56,6 +57,7 @@ class PascalVocParser(Parser):
 
     .. _pascal voc: http://host.robots.ox.ac.uk/pascal/VOC/
     """
+
     parser_type = ParserType.SINGLE_FILE
     box_type = PascalVocDetection
     extension = '.txt'

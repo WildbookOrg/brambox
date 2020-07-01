@@ -41,7 +41,9 @@ class TestPascalVocParser(unittest.TestCase):
 
     def test_serialize(self):
         """ test basic serialization with parser """
-        self.assertRaises(NotImplementedError, self.parser.serialize, PascalVocDetection())
+        self.assertRaises(
+            NotImplementedError, self.parser.serialize, PascalVocDetection()
+        )
 
     def test_deserialize(self):
         """ test basic deserialization with parser """

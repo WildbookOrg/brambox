@@ -37,7 +37,7 @@ def modulo_expand(expr, stride, offset):
     """ Expands a path with a **%d** to files with different numbers. """
     # Support negative offset
     number = offset
-    while (number < 0):
+    while number < 0:
         number += stride
 
     while True:

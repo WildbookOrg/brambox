@@ -5,11 +5,13 @@
 #
 
 import logging
-log = logging.getLogger(__name__)   # noqa
+
+log = logging.getLogger(__name__)  # noqa
 
 import os
 from pathlib import Path
 from PIL import Image, ImageDraw, ImageFont
+
 try:
     import cv2
     import numpy as np
@@ -145,7 +147,7 @@ def draw_pil(img, box, color, text, special):
 
     if text is not None:
         offset = 13 if special else 15
-        img.text((pt1[0], pt1[1]-offset), text, color, font)
+        img.text((pt1[0], pt1[1] - offset), text, color, font)
 
 
 def draw_cv(img, box, color, text, special):
@@ -157,7 +159,16 @@ def draw_cv(img, box, color, text, special):
     cv2.rectangle(img, pt1, pt2, color, thickness)
 
     if text is not None:
-        cv2.putText(img, text, (pt1[0], pt1[1]-5), cv2.FONT_HERSHEY_PLAIN, .75, color, 1, cv2.LINE_AA)
+        cv2.putText(
+            img,
+            text,
+            (pt1[0], pt1[1] - 5),
+            cv2.FONT_HERSHEY_PLAIN,
+            0.75,
+            color,
+            1,
+            cv2.LINE_AA,
+        )
 
 
 draw_boxes.METHOD_CV = 0

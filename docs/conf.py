@@ -44,14 +44,14 @@ extensions = [
     'sphinx.ext.intersphinx',
     'sphinx.ext.mathjax',
     'directives',
-    ]
+]
 napoleon_use_ivar = True
 napoleon_use_param = False
 autodoc_member_order = 'bysource'
 autodoc_mock_imports = []
 intersphinx_mapping = {
     'python': ('https://docs.python.org/3.6', None),
-    }
+}
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['.templates']
@@ -132,9 +132,7 @@ html_static_path = ['.static']
 # This is required for the alabaster theme
 # refs: http://alabaster.readthedocs.io/en/latest/installation.html#sidebars
 html_context = {
-    'css_files': [
-        '_static/custom.css'
-    ],
+    'css_files': ['_static/custom.css'],
 }
 html_sidebars = {
     '**': [
@@ -156,15 +154,12 @@ latex_elements = {
     # The paper size ('letterpaper' or 'a4paper').
     #
     # 'papersize': 'letterpaper',
-
     # The font size ('10pt', '11pt' or '12pt').
     #
     # 'pointsize': '10pt',
-
     # Additional stuff for the LaTeX preamble.
     #
     # 'preamble': '',
-
     # Latex figure (float) alignment
     #
     # 'figure_align': 'htbp',
@@ -174,8 +169,7 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, 'Brambox.tex', 'Brambox Documentation',
-     'EAVISE', 'manual'),
+    (master_doc, 'Brambox.tex', 'Brambox Documentation', 'EAVISE', 'manual'),
 ]
 
 
@@ -183,10 +177,7 @@ latex_documents = [
 
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
-man_pages = [
-    (master_doc, 'brambox', 'Brambox Documentation',
-     [author], 1)
-]
+man_pages = [(master_doc, 'brambox', 'Brambox Documentation', [author], 1)]
 
 
 # -- Options for Texinfo output -------------------------------------------
@@ -195,12 +186,16 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-    (master_doc, 'Brambox', 'Brambox Documentation',
-     author, 'Brambox', 'One line description of project.',
-     'Miscellaneous'),
+    (
+        master_doc,
+        'Brambox',
+        'Brambox Documentation',
+        author,
+        'Brambox',
+        'One line description of project.',
+        'Miscellaneous',
+    ),
 ]
-
-
 
 
 # Example configuration for intersphinx: refer to the Python standard library.

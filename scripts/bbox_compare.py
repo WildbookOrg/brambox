@@ -26,6 +26,7 @@ class StoreKwargs(argparse.Action):
         This action must be used with multiple arguments.
         It will parse ints and floats and leave the rest as strings.
     """
+
     def __call__(self, parser, namespace, values, option_string=None):
         d = {}
         for items in values:
@@ -53,7 +54,7 @@ class BoxImages:
         (0, 255, 255),
         (255, 255, 0),
         (255, 255, 255),
-        (0, 0, 0)
+        (0, 0, 0),
     ]
 
     def __init__(self, args):
@@ -86,13 +87,23 @@ class BoxImages:
         img_path = Path(self.folder) / (img_idx + self.ext)
         anno = self.annos[img_idx]
 
-        img = bbb.draw_boxes(img_path, anno, show_labels=self.anno_labels, color=self.colors[0])
+        img = bbb.draw_boxes(
+            img_path, anno, show_labels=self.anno_labels, color=self.colors[0]
+        )
         for i, det in enumerate(self.dets):
-            color_idx = (i % (len(self.colors)-1)) + 1
+            color_idx = (i % (len(self.colors) - 1)) + 1
             if img_idx in det:
                 ok, nok = bbb.filter_split(det[img_idx], bbb.MatchFilter(anno))
-                bbb.draw_boxes(img, ok, show_labels=self.det_labels, color=self.colors[color_idx])
-                bbb.draw_boxes(img, nok, show_labels=self.det_labels, color=self.colors[color_idx], faded=lambda b: True)
+                bbb.draw_boxes(
+                    img, ok, show_labels=self.det_labels, color=self.colors[color_idx]
+                )
+                bbb.draw_boxes(
+                    img,
+                    nok,
+                    show_labels=self.det_labels,
+                    color=self.colors[color_idx],
+                    faded=lambda b: True,
+                )
 
         return img_idx, img
 
@@ -137,7 +148,7 @@ def on_key_press(event):
         number = 0
     elif event.key in keys['end']:
         change = True
-        number = len(imgs)-1
+        number = len(imgs) - 1
     elif event.key in keys['info'] or event.key in keys['detailed-info']:
         detailed = True if event.key in keys['detailed-info'] else False
         boxes = imgs.annos[imgs.ids[number]]
@@ -195,16 +206,43 @@ def main():
     parser = argparse.ArgumentParser(
         description='This script can be used to compare multiple bounding box files, like annotations and detections',
         usage='%(prog)s imagesfolder annofile:format [detfile:format detfile:format ...] [optional arguments]',
-        epilog='Press \'?\' in the GUI for more information about the different keybindings'
+        epilog="Press '?' in the GUI for more information about the different keybindings",
     )
 
     parser.add_argument('imagefolder', help='Image folder')
-    parser.add_argument('anno', metavar='annofile:format', help='Annotation format and file, folder or file sequence')
-    parser.add_argument('det', metavar='detfile:format', help='Detection format and file, folder or file sequence', nargs='*')
-    parser.add_argument('--extension', '-x', metavar='.ext', help='Image extension (default .png)', default='.png')
-    parser.add_argument('--show-anno-labels', '-a', help='Show labels of annotations', action='store_true')
-    parser.add_argument('--show-det-labels', '-d', help='Show labels of detections', action='store_true')
-    parser.add_argument('--kwargs', '-k', metavar='KW=V', help='Keyword arguments for the parsers', nargs='*', action=StoreKwargs, default={})
+    parser.add_argument(
+        'anno',
+        metavar='annofile:format',
+        help='Annotation format and file, folder or file sequence',
+    )
+    parser.add_argument(
+        'det',
+        metavar='detfile:format',
+        help='Detection format and file, folder or file sequence',
+        nargs='*',
+    )
+    parser.add_argument(
+        '--extension',
+        '-x',
+        metavar='.ext',
+        help='Image extension (default .png)',
+        default='.png',
+    )
+    parser.add_argument(
+        '--show-anno-labels', '-a', help='Show labels of annotations', action='store_true'
+    )
+    parser.add_argument(
+        '--show-det-labels', '-d', help='Show labels of detections', action='store_true'
+    )
+    parser.add_argument(
+        '--kwargs',
+        '-k',
+        metavar='KW=V',
+        help='Keyword arguments for the parsers',
+        nargs='*',
+        action=StoreKwargs,
+        default={},
+    )
     args = parser.parse_args()
 
     print('Parsing bounding boxes...')

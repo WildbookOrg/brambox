@@ -28,9 +28,9 @@ class TestCocoDetection(unittest.TestCase):
                 'image_id': 'V000/I00019.png',
                 'category_id': 1,
                 'bbox': [506.547791, 216.665741, 20.434814, 39.914307],
-                'score': 0.436614
+                'score': 0.436614,
             },
-            None
+            None,
         )
 
         self.assertAlmostEqual(self.det.x_top_left, 506.547791)

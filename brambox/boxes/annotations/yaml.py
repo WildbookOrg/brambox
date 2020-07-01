@@ -17,15 +17,21 @@ log = logging.getLogger(__name__)
 
 class YamlAnnotation(Annotation):
     """ YAML image annotation """
+
     def serialize(self):
         """ generate a yaml annotation object """
         class_label = '?' if self.class_label == '' else self.class_label
         obj = {
-            'coords': [int(self.x_top_left), int(self.y_top_left), int(self.width), int(self.height)],
+            'coords': [
+                int(self.x_top_left),
+                int(self.y_top_left),
+                int(self.width),
+                int(self.height),
+            ],
             'lost': self.lost,
             'difficult': self.difficult,
-            'occluded_fraction': self.occluded_fraction*100,
-            'truncated_fraction': self.truncated_fraction*100,
+            'occluded_fraction': self.occluded_fraction * 100,
+            'truncated_fraction': self.truncated_fraction * 100,
         }
         if self.object_id is not None:
             obj['id'] = self.object_id
@@ -43,20 +49,28 @@ class YamlAnnotation(Annotation):
         if 'id' in yaml_obj:
             self.object_id = yaml_obj['id']
 
-        if 'occluded_fraction' not in yaml_obj:    # Backward compatible with older versions
-            log.deprecated('You are using an old yaml format that will be deprecated in newer versions. Consider to save your annotations with the new format.')
+        if 'occluded_fraction' not in yaml_obj:  # Backward compatible with older versions
+            log.deprecated(
+                'You are using an old yaml format that will be deprecated in newer versions. Consider to save your annotations with the new format.'
+            )
             self.occluded_fraction = float(yaml_obj['occluded'])
         else:
-            self.occluded_fraction = yaml_obj['occluded_fraction']/100
+            self.occluded_fraction = yaml_obj['occluded_fraction'] / 100
 
-        if 'truncated_fraction' not in yaml_obj:    # Backward compatible with older versions
-            log.deprecated('You are using an old yaml format that will be deprecated in newer versions. Consider to save your annotations with the new format.')
+        if (
+            'truncated_fraction' not in yaml_obj
+        ):  # Backward compatible with older versions
+            log.deprecated(
+                'You are using an old yaml format that will be deprecated in newer versions. Consider to save your annotations with the new format.'
+            )
             self.truncated_fraction = 0.0
         else:
-            self.truncated_fraction = yaml_obj['truncated_fraction']/100
+            self.truncated_fraction = yaml_obj['truncated_fraction'] / 100
 
         if 'difficult' not in yaml_obj:
-            log.deprecated('You are using an old yaml format that will be deprecated in newer versions. Consider to save your annotations with the new format.')
+            log.deprecated(
+                'You are using an old yaml format that will be deprecated in newer versions. Consider to save your annotations with the new format.'
+            )
             self.difficult = False
         else:
             self.difficult = yaml_obj['difficult']
@@ -97,6 +111,7 @@ class YamlParser(Parser):
                   occluded_fraction: 90.0
                   truncated_fraction: 76.0
     """
+
     parser_type = ParserType.SINGLE_FILE
     box_type = YamlAnnotation
     extension = '.yaml'

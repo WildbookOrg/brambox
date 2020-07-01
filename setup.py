@@ -9,6 +9,7 @@ def get_dist(pkgname):
     except DistributionNotFound:
         return None
 
+
 def find_scripts():
     return findall('scripts')
 

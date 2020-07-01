@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import unittest
 import numpy as np
+
 try:
     import cv2
 except ModuleNotFoundError:
@@ -33,7 +34,16 @@ class TestDrawBoxes(unittest.TestCase):
         res = bbb.draw_boxes(img.copy(), [self.anno], (255, 0, 0), True)
 
         cv2.rectangle(img, (5, 6), (15, 21), (0, 0, 255), 3)
-        cv2.putText(img, 'object', (5, 1), cv2.FONT_HERSHEY_PLAIN, .75, (0, 0, 255), 1, cv2.LINE_AA)
+        cv2.putText(
+            img,
+            'object',
+            (5, 1),
+            cv2.FONT_HERSHEY_PLAIN,
+            0.75,
+            (0, 0, 255),
+            1,
+            cv2.LINE_AA,
+        )
 
         self.assertTrue(np.array_equal(img, res))
 
@@ -51,7 +61,7 @@ class TestDrawBoxes(unittest.TestCase):
     def test_draw_detection(self):
         """ Test drawing a detection and printing its confidence value """
         det = bbb.Detection()
-        det.confidence = .66
+        det.confidence = 0.66
         det.class_label = 'obj'
         det.object_id = 1
         det.x_top_left = 10
@@ -80,7 +90,9 @@ class TestDrawBoxes(unittest.TestCase):
         anno2.height = 10
 
         img = Image.new('RGB', (40, 40))
-        res = bbb.draw_boxes(img.copy(), [self.anno, anno2], (255, 0, 0), True, faded=lambda a: a.difficult)
+        res = bbb.draw_boxes(
+            img.copy(), [self.anno, anno2], (255, 0, 0), True, faded=lambda a: a.difficult
+        )
 
         imgdraw = ImageDraw.Draw(img)
         imgdraw.line([(5, 6), (15, 6), (15, 21), (5, 21), (5, 6)], (255, 0, 0), 3)
@@ -156,7 +168,9 @@ class TestDrawBoxes(unittest.TestCase):
         anno4.height = 3
 
         img = Image.new('RGB', (10, 10))
-        res = bbb.draw_boxes(img.copy(), [anno1, anno2, anno3, anno4], dict(a=(255, 0, 0), b=(0, 0, 255)))
+        res = bbb.draw_boxes(
+            img.copy(), [anno1, anno2, anno3, anno4], dict(a=(255, 0, 0), b=(0, 0, 255))
+        )
 
         imgdraw = ImageDraw.Draw(img)
         imgdraw.line([(1, 1), (4, 1), (4, 4), (1, 4), (1, 1)], (255, 0, 0), 3)

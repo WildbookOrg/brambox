@@ -59,7 +59,7 @@ class TestAnnotation(unittest.TestCase):
         self.anno.lost = True
         self.anno.ignore = True
         self.anno.truncated = True
-        self.anno.occluded_fraction = .6
+        self.anno.occluded_fraction = 0.6
         self.assertEqual(str(self.anno), str_string)
 
 

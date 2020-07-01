@@ -20,13 +20,14 @@ class Box:
         width (Number): Width of the bounding box in pixels; Default **0.0**
         height (Number): Height of the bounding box in pixels; Default **0.0**
     """
+
     def __init__(self):
-        self.class_label = ''   # class string label
-        self.object_id = None   # object identifier
-        self.x_top_left = 0.0   # x pixel coordinate top left of the box
-        self.y_top_left = 0.0   # y pixel coordinate top left of the box
-        self.width = 0.0        # width of the box in pixels
-        self.height = 0.0       # height of the box in pixels
+        self.class_label = ''  # class string label
+        self.object_id = None  # object identifier
+        self.x_top_left = 0.0  # x pixel coordinate top left of the box
+        self.y_top_left = 0.0  # y pixel coordinate top left of the box
+        self.width = 0.0  # width of the box in pixels
+        self.height = 0.0  # height of the box in pixels
 
     @classmethod
     def create(cls, obj=None):
@@ -50,7 +51,9 @@ class Box:
             instance.width = obj.width
             instance.height = obj.height
         else:
-            raise TypeError(f'Object is not of type Box or not a string [obj.__class__.__name__]')
+            raise TypeError(
+                f'Object is not of type Box or not a string [obj.__class__.__name__]'
+            )
 
         return instance
 
@@ -69,9 +72,10 @@ class Box:
 
 class ParserType(Enum):
     """ Enum for differentiating between different parser types. """
-    UNDEFINED = 0       #: Undefined parsertype. Do not use this!
-    SINGLE_FILE = 1     #: One single file contains all annotations
-    MULTI_FILE = 2      #: One annotation file per image
+
+    UNDEFINED = 0  #: Undefined parsertype. Do not use this!
+    SINGLE_FILE = 1  #: One single file contains all annotations
+    MULTI_FILE = 2  #: One annotation file per image
 
 
 class Parser:
@@ -80,11 +84,14 @@ class Parser:
     Args:
         kwargs (optional): Derived parsers should use keyword arguments to get any information they need upon initialisation.
     """
-    parser_type = ParserType.UNDEFINED  #: Type of parser. Derived classes should set the correct value.
-    box_type = Box                      #: Type of bounding box this parser parses or generates. Derived classes should set the correct type.
-    extension = '.txt'                  #: Extension of the files this parser parses or creates. Derived classes should set the correct extension.
-    read_mode = 'r'                     #: Reading mode this parser uses when it parses a file. Derived classes should set the correct mode.
-    write_mode = 'w'                    #: Writing mode this parser uses when it generates a file. Derived classes should set the correct mode.
+
+    parser_type = (
+        ParserType.UNDEFINED
+    )  #: Type of parser. Derived classes should set the correct value.
+    box_type = Box  #: Type of bounding box this parser parses or generates. Derived classes should set the correct type.
+    extension = '.txt'  #: Extension of the files this parser parses or creates. Derived classes should set the correct extension.
+    read_mode = 'r'  #: Reading mode this parser uses when it parses a file. Derived classes should set the correct mode.
+    write_mode = 'w'  #: Writing mode this parser uses when it generates a file. Derived classes should set the correct mode.
 
     def __init__(self, **kwargs):
         pass
@@ -105,7 +112,9 @@ class Parser:
             If it is a :any:`brambox.boxes.ParserType.MULTI_FILE`, the box parameter should be a list ``[box, box, ...]``.
         """
         if self.parser_type != ParserType.MULTI_FILE:
-            raise TypeError('The default implementation of serialize only works with MULTI_FILE')
+            raise TypeError(
+                'The default implementation of serialize only works with MULTI_FILE'
+            )
 
         result = ''
         for b in box:
@@ -130,7 +139,9 @@ class Parser:
             If it is a :any:`brambox.boxes.ParserType.MULTI_FILE`, the return value should be a list ``[box, box, ...]``.
         """
         if self.parser_type != ParserType.MULTI_FILE:
-            raise TypeError('The default implementation of deserialize only works with MULTI_FILE')
+            raise TypeError(
+                'The default implementation of deserialize only works with MULTI_FILE'
+            )
 
         result = []
         for line in string.splitlines():

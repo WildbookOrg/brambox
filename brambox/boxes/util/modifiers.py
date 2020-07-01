@@ -10,10 +10,7 @@ These modifier functions allow to change certain aspects of your annotations and
 import collections
 from ..annotations import Annotation
 
-__all__ = [
-    'modify',
-    'AspectRatioModifier', 'ScaleModifier', 'CropModifier'
-]
+__all__ = ['modify', 'AspectRatioModifier', 'ScaleModifier', 'CropModifier']
 
 
 def modify(boxes, modifier_fns):
@@ -38,14 +35,14 @@ def modify(boxes, modifier_fns):
 
     if isinstance(boxes, dict):
         for _, values in boxes.items():
-            for i in range(len(values)-1, -1, -1):
+            for i in range(len(values) - 1, -1, -1):
                 for fn in modifier_fns:
                     values[i] = fn(values[i])
                     if values[i] is None:
                         del values[i]
                         break
     else:
-        for i in range(len(boxes)-1, -1, -1):
+        for i in range(len(boxes) - 1, -1, -1):
             for fn in modifier_fns:
                 boxes[i] = fn(boxes[i])
                 if boxes[i] is None:
@@ -69,6 +66,7 @@ class AspectRatioModifier:
         If the parameter is **'reduce'**, then the bounding box will be cropped to reach the new aspect ratio.
         If it is **'enlarge'**, then the bounding box will be made bigger.
     """
+
     def __init__(self, aspect_ratio=1.0, change='width', modify_ignores=False):
         self.ar = aspect_ratio
         self.modify_ignores = modify_ignores
@@ -112,6 +110,7 @@ class ScaleModifier:
     Args:
         scale (Number or list, optional): Value to rescale your bounding box, defined as a single number or a (width, height) tuple; Default **1.0**
     """
+
     def __init__(self, scale=1.0):
         if isinstance(scale, collections.Sequence):
             self.scale = tuple(scale[:2])
@@ -152,7 +151,15 @@ class CropModifier:
         If you use a **(width_thresh, height_thresh)** tuple, then the following formula is used:
         :math:`\\frac {width_{box\\ in\\ cropped\\ area}} {width_{box}} \\geq width\\_thresh \\ \\& \\  \\frac {height_{box\\ in\\ cropped\\ area}} {height_{box}} \\geq height\\_thresh`
     """
-    def __init__(self, area=float('Inf'), intersection_threshold=0, move_origin=True, discard_lost=True, update_truncated=False):
+
+    def __init__(
+        self,
+        area=float('Inf'),
+        intersection_threshold=0,
+        move_origin=True,
+        discard_lost=True,
+        update_truncated=False,
+    ):
         if isinstance(area, collections.Sequence):
             if len(area) >= 4:
                 self.area = tuple(area[:4])
@@ -164,7 +171,12 @@ class CropModifier:
                 self.area = (0, 0, area[0], area[0])
         else:
             self.area = (0, 0, area, area)
-        self.area = (self.area[0], self.area[1], self.area[0] + self.area[2], self.area[1] + self.area[3])
+        self.area = (
+            self.area[0],
+            self.area[1],
+            self.area[0] + self.area[2],
+            self.area[1] + self.area[3],
+        )
 
         if isinstance(intersection_threshold, collections.Sequence):
             self.inter_thresh = tuple(intersection_threshold[:2])
@@ -180,32 +192,61 @@ class CropModifier:
     def __call__(self, box):
         x1 = max(self.area[0], box.x_top_left)
         y1 = max(self.area[1], box.y_top_left)
-        x2 = min(self.area[2], box.x_top_left+box.width)
-        y2 = min(self.area[3], box.y_top_left+box.height)
-        w = x2-x1
-        h = y2-y1
+        x2 = min(self.area[2], box.x_top_left + box.width)
+        y2 = min(self.area[3], box.y_top_left + box.height)
+        w = x2 - x1
+        h = y2 - y1
 
         if self.inter_area:
             ratio = ((w * h) / (box.width * box.height)) < self.inter_thresh
         else:
-            ratio = (w / box.width) < self.inter_thresh[0] or (h / box.height) < self.inter_thresh[1]
+            ratio = (w / box.width) < self.inter_thresh[0] or (
+                h / box.height
+            ) < self.inter_thresh[1]
         if w <= 0 or h <= 0 or ratio:
             if self.discard_lost:
                 return None
             else:
                 box.lost = True
-                if self.update_truncated and isinstance(box, Annotation) and box.truncated_fraction < 1:
+                if (
+                    self.update_truncated
+                    and isinstance(box, Annotation)
+                    and box.truncated_fraction < 1
+                ):
                     if w <= 0 or h <= 0:
                         box.truncated_fraction = 1
                     else:
-                        box.truncated_fraction = max(0, 1 - ((w * h) / (box.width * box.height * 1/(1-box.truncated_fraction))))
+                        box.truncated_fraction = max(
+                            0,
+                            1
+                            - (
+                                (w * h)
+                                / (
+                                    box.width
+                                    * box.height
+                                    * 1
+                                    / (1 - box.truncated_fraction)
+                                )
+                            ),
+                        )
                 if self.move_origin:
                     box.x_top_left -= self.area[0]
                     box.y_top_left -= self.area[1]
                 return box
         else:
-            if self.update_truncated and isinstance(box, Annotation) and box.truncated_fraction < 1:
-                box.truncated_fraction = max(0, 1 - ((w * h) / (box.width * box.height * 1/(1-box.truncated_fraction))))
+            if (
+                self.update_truncated
+                and isinstance(box, Annotation)
+                and box.truncated_fraction < 1
+            ):
+                box.truncated_fraction = max(
+                    0,
+                    1
+                    - (
+                        (w * h)
+                        / (box.width * box.height * 1 / (1 - box.truncated_fraction))
+                    ),
+                )
             box.x_top_left = x1
             box.y_top_left = y1
             box.width = w

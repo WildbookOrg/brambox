@@ -35,22 +35,27 @@ class Annotation(b.Box):
         The ``occluded`` flag is actually a property that returns **True** if the ``occluded_fraction`` > **0.0** and **False** if
         the occluded_fraction equals **0.0**. Thus modifying the ``occluded_fraction`` will affect the ``occluded`` flag and visa versa.
     """
+
     def __init__(self):
         """ x_top_left,y_top_left,width,height are in pixel coordinates """
         super(Annotation, self).__init__()
-        self.lost = False               # if object is not seen in the image, if true one must ignore this annotation
-        self.difficult = False          # if the object is considered difficult
-        self.interest = False          # if the object is an Annotation of Interest (AoI)
-        self.ignore = False             # if true, this bounding box will not be considered in statistics processing
-        self.occluded_fraction = 0.0   # value between 0 and 1 that indicates how much an object is occluded
-        self.truncated_fraction = 0.0   # value between 0 and 1 that indicates how much an object is truncated
+        self.lost = False  # if object is not seen in the image, if true one must ignore this annotation
+        self.difficult = False  # if the object is considered difficult
+        self.interest = False  # if the object is an Annotation of Interest (AoI)
+        self.ignore = False  # if true, this bounding box will not be considered in statistics processing
+        self.occluded_fraction = (
+            0.0  # value between 0 and 1 that indicates how much an object is occluded
+        )
+        self.truncated_fraction = (
+            0.0  # value between 0 and 1 that indicates how much an object is truncated
+        )
 
         # variables below are only valid if the 'occluded' property is True (occluded_fraction > 0) and
         # represent a bounding box that indicates the visible area inside the normal bounding box
-        self.visible_x_top_left = 0.0   # x position top left in pixels
-        self.visible_y_top_left = 0.0   # y position top left in pixels
-        self.visible_width = 0.0        # width in pixels
-        self.visible_height = 0.0       # height in pixels
+        self.visible_x_top_left = 0.0  # x position top left in pixels
+        self.visible_y_top_left = 0.0  # y position top left in pixels
+        self.visible_width = 0.0  # width in pixels
+        self.visible_height = 0.0  # height in pixels
 
     @property
     def occluded(self):
@@ -110,7 +115,7 @@ class Annotation(b.Box):
     def __repr__(self):
         """ Unambiguous representation """
         string = f'{self.__class__.__name__} ' + '{'
-        string += f'class_label = \'{self.class_label}\', '
+        string += f"class_label = '{self.class_label}', "
         string += f'object_id = {self.object_id}, '
         string += f'x = {self.x_top_left}, '
         string += f'y = {self.y_top_left}, '
@@ -156,4 +161,5 @@ ParserType = b.ParserType
 
 class Parser(b.Parser):
     """ Generic parser class """
-    box_type = Annotation        # Derived classes should set the correct box_type
+
+    box_type = Annotation  # Derived classes should set the correct box_type

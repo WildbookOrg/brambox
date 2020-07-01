@@ -17,6 +17,7 @@ __all__ = ['PascalVocAnnotation', 'PascalVocParser']
 
 class PascalVocAnnotation(Annotation):
     """ Pascal Voc image annotation """
+
     def serialize(self):
         """ generate a Pascal Voc object xml string """
         string = '<object>\n'
@@ -87,6 +88,7 @@ class PascalVocParser(Parser):
 
     .. _pascal voc: http://host.robots.ox.ac.uk/pascal/VOC/
     """
+
     parser_type = ParserType.MULTI_FILE
     box_type = PascalVocAnnotation
     extension = '.xml'
