@@ -27,7 +27,7 @@ Your ``CustomParser`` will then perform the actual parsing. It will parse your i
 First you must set some class properties to the correct values. Most of them speak for themselves, but the ``parser_type`` might not be entirely clear. This property defines what kind of format this parser is for.
 If it is set to :any:`ParserType.SINGLE_FILE <brambox.boxes.ParserType.SINGLE_FILE>`, this means the format has one big file that contains all the annotations for every image in the dataset.
 If it is set to :any:`ParserType.MULTI_FILE <brambox.boxes.ParserType.MULTI_FILE>`, this means the format has one file per image in the dataset. It is important for the :ref:`conversion functions <conversion-label>` to set this property to the correct value. |br|
-Then you can also override 2 methods, :func:`~brambox.boxes.box.Parser.serialize` and :func:`~brambox.boxes.box.Parser.deserialize`. 
+Then you can also override 2 methods, :func:`~brambox.boxes.box.Parser.serialize` and :func:`~brambox.boxes.box.Parser.deserialize`.
 :func:`~brambox.boxes.box.Parser.deserialize` is responsible for parsing the string from one file.
 This means that if you have a :any:`ParserType.MULTI_FILE <brambox.boxes.ParserType.MULTI_FILE>`, the parser should return a *list of bounding boxes* for every deserialize call.
 If it is a :any:`ParserType.SINGLE_FILE <brambox.boxes.ParserType.SINGLE_FILE>`, the parser should return a dictionary containing *image_identifiers* as keys and *lists of bounding boxes* as values.

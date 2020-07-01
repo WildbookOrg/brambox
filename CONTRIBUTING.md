@@ -1,6 +1,6 @@
 Coding guidelines
 =================
-Here are some conventions we use when coding for brambox.  
+Here are some conventions we use when coding for brambox.
 For some actual guides on how to write custom parts for brambox,
 take a look [here](https://eavise.gitlab.io/brambox/notes/02-extending.html).
 
@@ -22,21 +22,21 @@ pip install -r develop.txt
 
 ### Coding style
 This project follows the [pep8](https://www.python.org/dev/peps/pep-0008/) coding style guide
-(except for the ridiculous max 79 character line length).  
+(except for the ridiculous max 79 character line length).
 You can validate your contributed code on style guide violations by running `make lint` in the root directory of the repo.
 
 ### Unit tests
-The _tests_ folder contains unit test modules for the brambox packages. You can run all tests with `make test`.   
+The _tests_ folder contains unit test modules for the brambox packages. You can run all tests with `make test`.
 If you want to run only one unit test module during test development, use the following command:
 ```bash
 python test/test_my_module.py
 ```
 
 ### Documentation
-The documentation of the latest release of brambox can always be found [here](eavise.gitlab.io/brambox).  
+The documentation of the latest release of brambox can always be found [here](eavise.gitlab.io/brambox).
 If you want to check out the documentation of an earlier release or if you want to use the development version,
 you will need to build it yourself with `make docs`.
-The documentation will then be available in _docs/.build/html/index.html_.  
+The documentation will then be available in _docs/.build/html/index.html_.
 This project uses [Sphinx 1.7](https://github.com/sphinx-doc/sphinx) with napoleon to generate the documentation.
 The documentation consists of docstrings in the source code using the [google style](http://www.sphinx-doc.org/en/stable/ext/napoleon.html#google-vs-numpy).
 
@@ -53,11 +53,11 @@ To ease the process of accepting your PR, here are some key points that need to 
 
 
 ## Core developers
-This is only intended for core developers, but can be used by everyone.  
+This is only intended for core developers, but can be used by everyone.
 Since we do not want any code that fails the linting or unit tests in the `master` or `develop` branches
 (or any other branches really, but certainly not those),
 we count on it that core developers check the code before pushing to these branches.
-Of course all developers are still human and might actually forget this!  
+Of course all developers are still human and might actually forget this!
 This is why the CI of this gitlab repo checks the linting and unit tests of every branch,
 whenever someone pushes to it. If it fails, the culprit will be send an annoying email to urge him to fix it asap!
 

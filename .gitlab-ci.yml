@@ -36,7 +36,7 @@ coverage:
     - master
     - develop
   script:
-    - coverage report 
+    - coverage report
     - codecov -t 55553a97-b480-426f-9f03-3b6d401151a7
   coverage: '/TOTAL.+ ([0-9]{1,3}%)/'
 

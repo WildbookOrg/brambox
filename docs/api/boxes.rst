@@ -6,7 +6,7 @@ The boxes module has a few dictionaries that contain references to all the suppo
 
 .. dict:: brambox.boxes annotation_formats
 .. dict:: brambox.boxes detection_formats
-.. dict:: brambox.boxes formats 
+.. dict:: brambox.boxes formats
 
 .. autoclass:: brambox.boxes.Box
    :members:
