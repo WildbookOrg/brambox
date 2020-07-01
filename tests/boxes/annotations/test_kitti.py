@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import unittest
 from brambox.boxes.annotations.annotation import Annotation
 from brambox.boxes.annotations import KittiAnnotation, KittiParser

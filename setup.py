@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from setuptools import findall, find_packages, setup
 from pkg_resources import get_distribution, DistributionNotFound
 

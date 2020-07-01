@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import unittest
 from brambox.boxes.detections.detection import Detection
 from brambox.boxes.detections import CocoDetection, CocoParser
