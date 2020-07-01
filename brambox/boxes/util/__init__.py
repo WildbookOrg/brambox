@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 Brambox boxes util module |br|
 This package contains utilitary function to use with brambox boxes.

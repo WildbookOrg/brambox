@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 Brambox transforms module |br|
 This package contains various image transformation functions, we feel are worth sharing.

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 Brambox boxes module |br|
 This package contains parsers for various annotation and detection formats.

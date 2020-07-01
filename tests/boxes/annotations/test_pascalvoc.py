@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import unittest
 import xml.etree.ElementTree as ET
 from brambox.boxes.annotations.annotation import Annotation

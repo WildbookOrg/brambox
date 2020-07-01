@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 Brambox boxes detections module |br|
 This package contains the actual detection parsers. These parsers can be used to parse detection files.

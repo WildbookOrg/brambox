@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 #
 # BRAMBOX: Basic Recipes for Annotations and Modeling Toolbox
 # Copyright EAVISE
