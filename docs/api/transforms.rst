@@ -3,7 +3,7 @@ Transforms
 .. automodule:: brambox.transforms
 
 .. autoclass:: brambox.transforms.ChannelMixer
-   :members: 
+   :members:
    :special-members: __call__
 
 
