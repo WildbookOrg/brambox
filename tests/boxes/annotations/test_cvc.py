@@ -24,7 +24,7 @@ class TestCvcAnnotation(unittest.TestCase):
         self.anno.object_id = 6
 
         string = self.anno.serialize()
-        self.assertEqual(string, "22 19 18 16 1 0 0 0 0 6 0")
+        self.assertEqual(string, '22 19 18 16 1 0 0 0 0 6 0')
 
     def test_serialize_round(self):
         """ test if serialize rounds the x,y,w,h,object_id values correctly """
@@ -34,11 +34,11 @@ class TestCvcAnnotation(unittest.TestCase):
         self.anno.height = 16.1
 
         string = self.anno.serialize()
-        self.assertEqual(string, "22 19 19 16 1 0 0 0 0 -1 0")
+        self.assertEqual(string, '22 19 19 16 1 0 0 0 0 -1 0')
 
     def test_deserialize(self):
         """ test if major fields, x,y,w,h,object_id are processed """
-        string = "60 50 30 40 1 0 0 0 0 3 0"
+        string = '60 50 30 40 1 0 0 0 0 3 0'
         self.anno.deserialize(string)
         self.assertAlmostEqual(self.anno.x_top_left, 45)
         self.assertAlmostEqual(self.anno.y_top_left, 30)

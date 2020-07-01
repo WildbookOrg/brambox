@@ -24,10 +24,10 @@ class TestCocoDetection(unittest.TestCase):
         """ test if deserialization of one detection works """
         self.det.deserialize(
             {
-                "image_id": "V000/I00019.png",
-                "category_id": 1,
-                "bbox": [506.547791, 216.665741, 20.434814, 39.914307],
-                "score": 0.436614
+                'image_id': 'V000/I00019.png',
+                'category_id': 1,
+                'bbox': [506.547791, 216.665741, 20.434814, 39.914307],
+                'score': 0.436614
             },
             None
         )

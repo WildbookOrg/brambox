@@ -15,7 +15,7 @@ class TestChannelMixer(unittest.TestCase):
     def tearDown(self):
         pass
 
-    @unittest.skipIf(cv2 is None, "OpenCV not found, test depending on OpenCV")
+    @unittest.skipIf(cv2 is None, 'OpenCV not found, test depending on OpenCV')
     def test_basic_cv2(self):
         """ Test if mixing works with OpenCV """
         self.mixer.set_channels([(1, 0), (0, 1), (0, 0), (0, 2)])

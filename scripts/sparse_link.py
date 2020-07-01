@@ -22,8 +22,8 @@ def main():
     parser.add_argument('outputdir', help='Output directory')
     parser.add_argument('--stride', '-s', metavar='N', type=int, default=1, help="Only create a symlink for every n'th file where n is this parameter")
     parser.add_argument('--offset', '-o', metavar='N', type=int, default=0, help='Start with a certain offset')
-    parser.add_argument('--hardlink', '-l', action='store_true', help="Create hardlinks instead of softlinks")
-    parser.add_argument('--force', '-f', action='store_true', help="Force override if link already exists")
+    parser.add_argument('--hardlink', '-l', action='store_true', help='Create hardlinks instead of softlinks')
+    parser.add_argument('--force', '-f', action='store_true', help='Force override if link already exists')
 
     args = parser.parse_args()
 

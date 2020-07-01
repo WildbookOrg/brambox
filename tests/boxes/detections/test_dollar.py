@@ -21,14 +21,14 @@ class TestDollarDetection(unittest.TestCase):
 
     def test_deserialize(self):
         """ test deserialize """
-        self.det.deserialize("20,16.3,17.4,5.6,6.7,51.2", ['person'])
+        self.det.deserialize('20,16.3,17.4,5.6,6.7,51.2', ['person'])
 
         self.assertAlmostEqual(self.det.x_top_left, 16.3)
         self.assertAlmostEqual(self.det.y_top_left, 17.4)
         self.assertAlmostEqual(self.det.width, 5.6)
         self.assertAlmostEqual(self.det.height, 6.7)
         self.assertAlmostEqual(self.det.confidence, 51.2)
-        self.assertEqual(self.det.class_label, "person")
+        self.assertEqual(self.det.class_label, 'person')
 
 
 class TestDollarParser(unittest.TestCase):

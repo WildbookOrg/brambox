@@ -10,9 +10,9 @@ class Batch:
         self.avg_loss = avg_loss
 
     def __str__(self):
-        text = "iteration = {}, ".format(self.iteration)
-        text += "total loss = {}, ".format(self.total_loss)
-        text += "avg_loss = {}".format(self.avg_loss)
+        text = 'iteration = {}, '.format(self.iteration)
+        text += 'total loss = {}, '.format(self.total_loss)
+        text += 'avg_loss = {}'.format(self.avg_loss)
         return text
 
 
@@ -48,7 +48,7 @@ def main():
     subsampled_values = [v for v in values if v.iteration % args.weights_step == 0]
     sorted_subsampled_values = sorted(subsampled_values, key=lambda v: v.avg_loss)
     for i in range(10):
-        print("Candidate", i + 1, "=", sorted_subsampled_values[i])
+        print('Candidate', i + 1, '=', sorted_subsampled_values[i])
 
     # plot loss
     total_losses = [v.total_loss for v in values]
@@ -68,8 +68,8 @@ def plot(avg_losses, iterations, total_losses, backend='mpl'):
 def plot_mpl(avg_losses, iterations, total_losses):
     import matplotlib.pyplot as plt
     plt.figure(figsize=(10, 8))
-    plt.plot(iterations, total_losses, label="total loss", linewidth=1)
-    plt.plot(iterations, avg_losses, label="avg loss", linewidth=1)
+    plt.plot(iterations, total_losses, label='total loss', linewidth=1)
+    plt.plot(iterations, avg_losses, label='avg loss', linewidth=1)
     plt.gcf().suptitle('Training loss', weight='bold')
     plt.gca().set_ylabel('Loss')
     plt.gca().set_xlabel('Iteration')
@@ -83,8 +83,8 @@ def plot_ply(avg_losses, iterations, total_losses):
     import plotly.graph_objs as go
 
     plots = list(map(lambda loss: go.Scatter(x=iterations, y=loss, mode='lines'), [total_losses, avg_losses]))
-    plots[0].name = "total loss"
-    plots[1].name = "average loss"
+    plots[0].name = 'total loss'
+    plots[1].name = 'average loss'
     layout = go.Layout(title='Training loss', xaxis=dict(title='Iteration'), yaxis=dict(title='Loss', range=[0, 10]))
     fig = go.Figure(data=plots, layout=layout)
     po.plot(fig)
