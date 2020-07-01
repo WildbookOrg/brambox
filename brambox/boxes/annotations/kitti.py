@@ -9,7 +9,7 @@ KITTI
 
 from .annotation import *
 
-__all__ = ["KittiAnnotation", "KittiParser"]
+__all__ = ['KittiAnnotation', 'KittiParser']
 
 
 class KittiAnnotation(Annotation):

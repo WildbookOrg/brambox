@@ -8,7 +8,7 @@ import os
 from pathlib import Path
 import glob
 
-__all__ = ["expand"]
+__all__ = ['expand']
 
 
 def files(folder):
@@ -80,4 +80,4 @@ def expand(expr, stride=1, offset=0):
     elif '%' in expr:
         return modulo_expand(expr, stride, offset)
     else:
-        raise TypeError("File selection expression invalid")
+        raise TypeError('File selection expression invalid')

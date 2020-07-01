@@ -9,7 +9,7 @@ Darknet
 import logging
 from .annotation import *
 
-__all__ = ["DarknetAnnotation", "DarknetParser"]
+__all__ = ['DarknetAnnotation', 'DarknetParser']
 log = logging.getLogger(__name__)
 
 
@@ -31,7 +31,7 @@ class DarknetAnnotation(Annotation):
         width_relative = float(self.width) / image_width
         height_relative = float(self.height) / image_height
 
-        string = "{} {} {} {} {}" \
+        string = '{} {} {} {} {}' \
             .format(class_label_index,
                     x_center_relative,
                     y_center_relative,
@@ -119,13 +119,13 @@ class DarknetParser(Parser):
 
     def serialize(self, annotations):
         """ Serialize a list of annotations into one string """
-        result = ""
+        result = ''
 
         for anno in annotations:
             if anno.lost:   # darknet does not support lost type -> ignore
                 continue
             new_anno = self.box_type.create(anno)
-            result += new_anno.serialize(self.class_label_map, self.image_width, self.image_height) + "\n"
+            result += new_anno.serialize(self.class_label_map, self.image_width, self.image_height) + '\n'
 
         return result
 

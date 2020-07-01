@@ -10,7 +10,7 @@ import logging
 import yaml
 from .annotation import *
 
-__all__ = ["YamlAnnotation", "YamlParser"]
+__all__ = ['YamlAnnotation', 'YamlParser']
 log = logging.getLogger(__name__)
 
 

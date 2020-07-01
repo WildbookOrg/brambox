@@ -10,7 +10,7 @@ Pickle
 import pickle
 from .detection import *
 
-__all__ = ["PickleParser"]
+__all__ = ['PickleParser']
 
 
 class PickleParser(Parser):

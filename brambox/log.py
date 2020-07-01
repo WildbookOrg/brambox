@@ -18,7 +18,7 @@ def deprecated(self, message, *args, **kws):
         self._log(35, message, args, **kws)
 
 
-logging.addLevelName(35, "DEPRECATED")
+logging.addLevelName(35, 'DEPRECATED')
 logging.Logger.deprecated = deprecated
 
 # Console Handler

@@ -9,7 +9,7 @@ CVC
 
 from .annotation import *
 
-__all__ = ["CvcAnnotation", "CvcParser"]
+__all__ = ['CvcAnnotation', 'CvcParser']
 
 
 class CvcAnnotation(Annotation):
@@ -20,7 +20,7 @@ class CvcAnnotation(Annotation):
         Note that this format does not support a class label
         """
         object_id = -1 if self.object_id is None else int(self.object_id)
-        string = "{} {} {} {} 1 0 0 0 0 {} 0" \
+        string = '{} {} {} {} 1 0 0 0 0 {} 0' \
             .format(round(self.x_top_left + self.width / 2),
                     round(self.y_top_left + self.height / 2),
                     round(self.width),

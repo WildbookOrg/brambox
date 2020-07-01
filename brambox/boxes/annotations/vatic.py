@@ -9,7 +9,7 @@ Vatic
 
 from .annotation import *
 
-__all__ = ["VaticAnnotation", "VaticParser"]
+__all__ = ['VaticAnnotation', 'VaticParser']
 
 
 class VaticAnnotation(Annotation):
@@ -26,7 +26,7 @@ class VaticAnnotation(Annotation):
         generated = 0
         class_label = '?' if self.class_label == '' else self.class_label
 
-        string = "{} {} {} {} {} {} {} {} {} {}" \
+        string = '{} {} {} {} {} {} {} {} {} {}' \
             .format(object_id,
                     x_min,
                     y_min,
@@ -102,7 +102,7 @@ class VaticParser(Parser):
                 new_anno = self.box_type.create(anno)
                 result += [new_anno.serialize(img_id)]
 
-        return "\n".join(result)
+        return '\n'.join(result)
 
     def deserialize(self, string):
         """ deserialize a string containing the content of a VATIC .txt file """

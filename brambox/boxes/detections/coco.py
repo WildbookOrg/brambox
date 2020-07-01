@@ -10,7 +10,7 @@ Coco
 import json
 from .detection import *
 
-__all__ = ["CocoDetection", "CocoParser"]
+__all__ = ['CocoDetection', 'CocoParser']
 
 
 class CocoDetection(Detection):

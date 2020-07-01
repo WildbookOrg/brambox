@@ -51,7 +51,7 @@ class BoxImages:
 
         self.folder = args.imagefolder
         self.ext = args.extension
-        if args.extension != "" and args.extension[0] != '.':
+        if args.extension != '' and args.extension[0] != '.':
             self.ext = '.' + args.extension
         self.labels = args.show_labels
 

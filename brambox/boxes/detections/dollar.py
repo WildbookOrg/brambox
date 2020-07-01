@@ -9,7 +9,7 @@ Dollar
 
 from .detection import *
 
-__all__ = ["DollarDetection", "DollarParser"]
+__all__ = ['DollarDetection', 'DollarParser']
 
 
 class DollarDetection(Detection):

@@ -10,7 +10,7 @@ YAML
 import yaml
 from .detection import *
 
-__all__ = ["YamlDetection", "YamlParser"]
+__all__ = ['YamlDetection', 'YamlParser']
 
 
 class YamlDetection(Detection):

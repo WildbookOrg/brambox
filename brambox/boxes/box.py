@@ -106,10 +106,10 @@ class Parser:
         if self.parser_type != ParserType.MULTI_FILE:
             raise TypeError('The default implementation of serialize only works with MULTI_FILE')
 
-        result = ""
+        result = ''
         for b in box:
             new_box = self.box_type.create(b)
-            result += new_box.serialize() + "\n"
+            result += new_box.serialize() + '\n'
 
         return result
 

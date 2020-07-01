@@ -9,7 +9,7 @@ Pascal VOC
 import logging
 from .detection import *
 
-__all__ = ["PascalVocDetection", "PascalVocParser"]
+__all__ = ['PascalVocDetection', 'PascalVocParser']
 log = logging.getLogger(__name__)
 
 

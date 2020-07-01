@@ -10,7 +10,7 @@ Dollar
 import logging
 from .annotation import *
 
-__all__ = ["DollarAnnotation", "DollarParser"]
+__all__ = ['DollarAnnotation', 'DollarParser']
 log = logging.getLogger(__name__)
 
 
@@ -19,7 +19,7 @@ class DollarAnnotation(Annotation):
 
     def serialize(self):
         """ generate a dollar annotation string """
-        string = "{} {} {} {} {} {} {} {} {} {} {} 0" \
+        string = '{} {} {} {} {} {} {} {} {} {} {} 0' \
             .format(self.class_label if len(self.class_label) != 0 else '?',
                     round(self.x_top_left),
                     round(self.y_top_left),

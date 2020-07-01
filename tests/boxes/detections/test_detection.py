@@ -31,7 +31,7 @@ class TestDetection(unittest.TestCase):
 
     def test_repr(self):
         """ Test annotation __repr__ function """
-        repr_string = "Detection {class_label = , object_id = None, x = 0.0, y = 0.0, w = 0.0, h = 0.0, confidence = 0.0}"
+        repr_string = 'Detection {class_label = , object_id = None, x = 0.0, y = 0.0, w = 0.0, h = 0.0, confidence = 0.0}'
         self.assertEqual(repr(self.det), repr_string)
 
     def test_print(self):
