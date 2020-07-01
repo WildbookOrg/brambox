@@ -26,7 +26,10 @@ class TestKittiAnnotation(unittest.TestCase):
         self.anno.occluded_fraction = 0.6
 
         string = self.anno.serialize()
-        self.assertEqual(string, 'person 0.00 2 -10 35.00 30.00 65.00 70.00 -1 -1 -1 -1000 -1000 -1000 -10')
+        self.assertEqual(
+            string,
+            'person 0.00 2 -10 35.00 30.00 65.00 70.00 -1 -1 -1 -1000 -1000 -1000 -10',
+        )
 
     def test_deserialize(self):
         """ test if deserialization of one annotation works """

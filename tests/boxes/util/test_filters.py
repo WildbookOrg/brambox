@@ -4,7 +4,6 @@ import brambox.boxes as bbb
 
 
 class TestImageBoundsFilter(unittest.TestCase):
-
     def setUp(self):
         # construct box that is in bounds
         self.box = bbb.Box()
@@ -55,7 +54,6 @@ class TestImageBoundsFilter(unittest.TestCase):
 
 
 class TestOcclusionAreaFilter(unittest.TestCase):
-
     def setUp(self):
         self.anno = bbb.Annotation()
         self.visible_range = (0.5, 0.7)

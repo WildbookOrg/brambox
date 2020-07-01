@@ -37,7 +37,7 @@ class TestYamlDetection(unittest.TestCase):
         self.det.y_top_left = 20
         self.det.width = 30
         self.det.height = 40
-        self.det.confidence = .1234
+        self.det.confidence = 0.1234
 
         key, val = self.det.serialize()
         self.assertEqual(key, 'person')
@@ -46,7 +46,9 @@ class TestYamlDetection(unittest.TestCase):
 
     def test_deserialize(self):
         """ test if deserialization of one detection works """
-        self.det.deserialize({'coords': [10, 20, 30, 40], 'id': 1, 'score': 12.34}, 'person')
+        self.det.deserialize(
+            {'coords': [10, 20, 30, 40], 'id': 1, 'score': 12.34}, 'person'
+        )
 
         self.assertEqual(self.det.class_label, 'person')
         self.assertEqual(self.det.object_id, 1)
@@ -70,7 +72,7 @@ class TestYamlParser(unittest.TestCase):
         testdet2 = Detection()
         testdet2.class_label = 'person'
         testdet2.object_id = 1
-        testdet2.confidence = .90
+        testdet2.confidence = 0.90
         obj = {'img_1': [testdet1, testdet2], 'img_2': [testdet1, testdet1, testdet1]}
 
         string = self.parser.serialize(obj)

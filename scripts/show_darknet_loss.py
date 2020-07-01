@@ -20,12 +20,23 @@ class Batch:
 def main():
     parser = argparse.ArgumentParser(
         description='Parse DarkNet stdout, plot the loss and indicate weights file '
-                    'with lowest avg precision and total precision.')
+        'with lowest avg precision and total precision.'
+    )
     parser.add_argument('input', help='Input text file containing darknet stdout.')
-    parser.add_argument('--weights-step', '-w', metavar='N', default=100,
-                        help='Multiple of iterations a new weights file is saved. '
-                        'This is used to point to the most interesting weights file.')
-    parser.add_argument('--backend', '-b', default='mpl', help='Set the rendering engine of the plot to "mpl" or "ply".')
+    parser.add_argument(
+        '--weights-step',
+        '-w',
+        metavar='N',
+        default=100,
+        help='Multiple of iterations a new weights file is saved. '
+        'This is used to point to the most interesting weights file.',
+    )
+    parser.add_argument(
+        '--backend',
+        '-b',
+        default='mpl',
+        help='Set the rendering engine of the plot to "mpl" or "ply".',
+    )
     args = parser.parse_args()
 
     with open(args.input) as f:
@@ -68,6 +79,7 @@ def plot(avg_losses, iterations, total_losses, backend='mpl'):
 
 def plot_mpl(avg_losses, iterations, total_losses):
     import matplotlib.pyplot as plt
+
     plt.figure(figsize=(10, 8))
     plt.plot(iterations, total_losses, label='total loss', linewidth=1)
     plt.plot(iterations, avg_losses, label='avg loss', linewidth=1)
@@ -83,10 +95,19 @@ def plot_ply(avg_losses, iterations, total_losses):
     import plotly.offline as po
     import plotly.graph_objs as go
 
-    plots = list(map(lambda loss: go.Scatter(x=iterations, y=loss, mode='lines'), [total_losses, avg_losses]))
+    plots = list(
+        map(
+            lambda loss: go.Scatter(x=iterations, y=loss, mode='lines'),
+            [total_losses, avg_losses],
+        )
+    )
     plots[0].name = 'total loss'
     plots[1].name = 'average loss'
-    layout = go.Layout(title='Training loss', xaxis=dict(title='Iteration'), yaxis=dict(title='Loss', range=[0, 10]))
+    layout = go.Layout(
+        title='Training loss',
+        xaxis=dict(title='Iteration'),
+        yaxis=dict(title='Loss', range=[0, 10]),
+    )
     fig = go.Figure(data=plots, layout=layout)
     po.plot(fig)
 

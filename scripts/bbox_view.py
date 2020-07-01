@@ -26,6 +26,7 @@ class StoreKwargs(argparse.Action):
         This action must be used with multiple arguments.
         It will parse ints and floats and leave the rest as strings.
     """
+
     def __call__(self, parser, namespace, values, option_string=None):
         d = {}
         for items in values:
@@ -63,7 +64,9 @@ class BoxImages:
         """ Returns (id, img) tuple """
         img_idx = self.ids[idx]
         img_path = os.path.join(self.folder, img_idx + self.ext)
-        img = bbb.draw_boxes(img_path, self.boxes[img_idx], show_labels=self.labels, faded=self.faded)
+        img = bbb.draw_boxes(
+            img_path, self.boxes[img_idx], show_labels=self.labels, faded=self.faded
+        )
         return img_idx, img
 
 
@@ -101,7 +104,7 @@ def on_key_press(event):
         number = 0
     elif event.key in keys['end']:
         change = True
-        number = len(imgs)-1
+        number = len(imgs) - 1
     elif event.key in keys['info'] or event.key in keys['detailed-info']:
         detailed = True if event.key in keys['detailed-info'] else False
         boxes = imgs.boxes[imgs.ids[number]]
@@ -145,16 +148,46 @@ def main():
     parser = argparse.ArgumentParser(
         description='This script will display the provided bounding boxes on the images',
         usage='%(prog)s format file imagefolder [optional arguments]',
-        epilog='Press \'?\' in the GUI for more information about the different keybindings'
+        epilog="Press '?' in the GUI for more information about the different keybindings",
     )
 
-    parser.add_argument('format', metavar='format', help='format key form brambox.boxes.formats', choices=bbb.formats.keys())
+    parser.add_argument(
+        'format',
+        metavar='format',
+        help='format key form brambox.boxes.formats',
+        choices=bbb.formats.keys(),
+    )
     parser.add_argument('file', help='Bounding box file, folder or file sequence')
     parser.add_argument('imagefolder', help='Image folder')
-    parser.add_argument('--extension', '-x', metavar='.ext', help='Image extension (default .png)', default='.png')
-    parser.add_argument('--show-labels', '-l', help='Show labels above bounding boxes', action='store_true')
-    parser.add_argument('--faded', '-f', metavar='lambda', help='Lambda function to pass as faded parameter', default=None)
-    parser.add_argument('--kwargs', '-k', metavar='KW=V', help='Keyword arguments for the parser', nargs='*', action=StoreKwargs, default={})
+    parser.add_argument(
+        '--extension',
+        '-x',
+        metavar='.ext',
+        help='Image extension (default .png)',
+        default='.png',
+    )
+    parser.add_argument(
+        '--show-labels',
+        '-l',
+        help='Show labels above bounding boxes',
+        action='store_true',
+    )
+    parser.add_argument(
+        '--faded',
+        '-f',
+        metavar='lambda',
+        help='Lambda function to pass as faded parameter',
+        default=None,
+    )
+    parser.add_argument(
+        '--kwargs',
+        '-k',
+        metavar='KW=V',
+        help='Keyword arguments for the parser',
+        nargs='*',
+        action=StoreKwargs,
+        default={},
+    )
     args = parser.parse_args()
 
     print('Parsing bounding boxes...')

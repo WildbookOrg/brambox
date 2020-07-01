@@ -20,18 +20,19 @@ class DollarAnnotation(Annotation):
 
     def serialize(self):
         """ generate a dollar annotation string """
-        string = '{} {} {} {} {} {} {} {} {} {} {} 0' \
-            .format(self.class_label if len(self.class_label) != 0 else '?',
-                    round(self.x_top_left),
-                    round(self.y_top_left),
-                    round(self.width),
-                    round(self.height),
-                    int(self.occluded),
-                    round(self.visible_x_top_left),
-                    round(self.visible_y_top_left),
-                    round(self.visible_width),
-                    round(self.visible_height),
-                    int(self.lost))
+        string = '{} {} {} {} {} {} {} {} {} {} {} 0'.format(
+            self.class_label if len(self.class_label) != 0 else '?',
+            round(self.x_top_left),
+            round(self.y_top_left),
+            round(self.width),
+            round(self.height),
+            int(self.occluded),
+            round(self.visible_x_top_left),
+            round(self.visible_y_top_left),
+            round(self.visible_width),
+            round(self.visible_height),
+            int(self.lost),
+        )
 
         return string
 
@@ -99,6 +100,7 @@ class DollarParser(Parser):
 
     .. _toolbox: https://github.com/pdollar/toolbox/blob/master/detector/bbGt.m
     """
+
     parser_type = ParserType.MULTI_FILE
     box_type = DollarAnnotation
 
@@ -107,7 +109,9 @@ class DollarParser(Parser):
         if 'occlusion_tag_map' in kwargs:
             self.occlusion_tag_map = kwargs['occlusion_tag_map']
         else:
-            log.info("No 'occlusion_tag_map' kwarg found, interpreting occluded value as a binary label.")
+            log.info(
+                "No 'occlusion_tag_map' kwarg found, interpreting occluded value as a binary label."
+            )
 
     def deserialize(self, string):
         """ deserialize a string containing the content of a dollar .txt file

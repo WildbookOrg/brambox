@@ -69,6 +69,7 @@ class CocoParser(Parser):
 
     .. _darknet: https://pjreddie.com/darknet/
     """
+
     parser_type = ParserType.SINGLE_FILE
     box_type = CocoDetection
     extension = '.json'

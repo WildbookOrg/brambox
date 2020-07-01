@@ -15,7 +15,10 @@ class TestPickleParser(unittest.TestCase):
         testanno1 = PickleAnnotation()
         testanno2 = PickleAnnotation()
         testanno2.class_label = 'person'
-        obj = {'img_1': [testanno1, testanno2], 'img_2': [testanno1, testanno1, testanno1]}
+        obj = {
+            'img_1': [testanno1, testanno2],
+            'img_2': [testanno1, testanno1, testanno1],
+        }
 
         bytestream = self.parser.serialize(obj)
         obj2 = self.parser.deserialize(bytestream)

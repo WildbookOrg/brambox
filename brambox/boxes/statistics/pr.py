@@ -28,7 +28,9 @@ def pr(detections, ground_truth, overlap_threshold=0.5):
     Returns:
         tuple: **[precision_values]**, **[recall_values]**
     """
-    tps, fps, num_annotations = match_detections(detections, ground_truth, overlap_threshold)
+    tps, fps, num_annotations = match_detections(
+        detections, ground_truth, overlap_threshold
+    )
 
     precision = []
     recall = []
@@ -55,8 +57,10 @@ def ap(precision, recall, num_of_samples=100):
         p = np.array(precision)
         r = np.array(recall)
         p_start = p[np.argmin(r)]
-        samples = np.arange(0., 1., 1.0/num_of_samples)
-        interpolated = scipy.interpolate.interp1d(r, p, fill_value=(p_start, 0.), bounds_error=False)(samples)
+        samples = np.arange(0.0, 1.0, 1.0 / num_of_samples)
+        interpolated = scipy.interpolate.interp1d(
+            r, p, fill_value=(p_start, 0.0), bounds_error=False
+        )(samples)
         avg = sum(interpolated) / len(interpolated)
     elif len(precision) > 0 and len(recall) > 0:
         # 1 point on PR: AP is box between (0,0) and (p,r)

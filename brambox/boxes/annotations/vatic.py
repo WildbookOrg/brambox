@@ -15,6 +15,7 @@ __all__ = ['VaticAnnotation', 'VaticParser']
 
 class VaticAnnotation(Annotation):
     """ VATIC tool annotation """
+
     def serialize(self, frame_nr=0):
         """ generate a vatic annotation string """
         object_id = self.object_id if self.object_id is not None else -1
@@ -27,17 +28,18 @@ class VaticAnnotation(Annotation):
         generated = 0
         class_label = '?' if self.class_label == '' else self.class_label
 
-        string = '{} {} {} {} {} {} {} {} {} {}' \
-            .format(object_id,
-                    x_min,
-                    y_min,
-                    x_max,
-                    y_max,
-                    frame_nr,
-                    lost,
-                    occluded,
-                    generated,
-                    class_label)
+        string = '{} {} {} {} {} {} {} {} {} {}'.format(
+            object_id,
+            x_min,
+            y_min,
+            x_max,
+            y_max,
+            frame_nr,
+            lost,
+            occluded,
+            generated,
+            class_label,
+        )
 
         return string
 
@@ -54,7 +56,7 @@ class VaticAnnotation(Annotation):
         frame_nr = int(elements[5])
         self.lost = elements[6] != '0'
         self.occluded = elements[7] != '0'
-        self.class_label = elements[9].strip('\"')
+        self.class_label = elements[9].strip('"')
         if self.class_label == '?':
             self.class_label = ''
 
@@ -91,6 +93,7 @@ class VaticParser(Parser):
 
     .. _VATIC: https://github.com/cvondrick/vatic
     """
+
     parser_type = ParserType.SINGLE_FILE
     box_type = VaticAnnotation
 

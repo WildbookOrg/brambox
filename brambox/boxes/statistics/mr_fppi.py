@@ -27,7 +27,9 @@ def mr_fppi(detections, ground_truth, overlap_threshold=0.5):
         tuple: **[miss-rate_values]**, **[fppi_values]**
     """
     num_images = len(ground_truth)
-    tps, fps, num_annotations = match_detections(detections, ground_truth, overlap_threshold)
+    tps, fps, num_annotations = match_detections(
+        detections, ground_truth, overlap_threshold
+    )
 
     miss_rate = []
     fppi = []
@@ -52,10 +54,12 @@ def lamr(miss_rate, fppi, num_of_samples=9):
     Returns:
         Number: log average miss-rate
     """
-    samples = np.logspace(-2., 0., num_of_samples)
+    samples = np.logspace(-2.0, 0.0, num_of_samples)
     m = np.array(miss_rate)
     f = np.array(fppi)
-    interpolated = scipy.interpolate.interp1d(f, m, fill_value=(1., 0.), bounds_error=False)(samples)
+    interpolated = scipy.interpolate.interp1d(
+        f, m, fill_value=(1.0, 0.0), bounds_error=False
+    )(samples)
     log_interpolated = np.log(interpolated)
     avg = sum(log_interpolated) / len(log_interpolated)
     return np.exp(avg)

@@ -16,6 +16,7 @@ log = logging.getLogger(__name__)
 
 class DarknetAnnotation(Annotation):
     """ Darknet image annotation """
+
     def serialize(self, class_label_map, image_width, image_height):
         """ generate a darknet annotation string """
         if class_label_map is not None:
@@ -32,12 +33,13 @@ class DarknetAnnotation(Annotation):
         width_relative = float(self.width) / image_width
         height_relative = float(self.height) / image_height
 
-        string = '{} {} {} {} {}' \
-            .format(class_label_index,
-                    x_center_relative,
-                    y_center_relative,
-                    width_relative,
-                    height_relative)
+        string = '{} {} {} {} {}'.format(
+            class_label_index,
+            x_center_relative,
+            y_center_relative,
+            width_relative,
+            height_relative,
+        )
 
         return string
 
@@ -89,6 +91,7 @@ class DarknetParser(Parser):
 
     .. _darknet: https://pjreddie.com/darknet
     """
+
     parser_type = ParserType.MULTI_FILE
     box_type = DarknetAnnotation
 
@@ -115,7 +118,9 @@ class DarknetParser(Parser):
             else:
                 self.class_label_map = label_map
         except KeyError:
-            log.info("No 'class_label_map' kwarg found, parser will use indices as class_labels.")
+            log.info(
+                "No 'class_label_map' kwarg found, parser will use indices as class_labels."
+            )
             self.class_label_map = None
 
     def serialize(self, annotations):
@@ -123,10 +128,15 @@ class DarknetParser(Parser):
         result = ''
 
         for anno in annotations:
-            if anno.lost:   # darknet does not support lost type -> ignore
+            if anno.lost:  # darknet does not support lost type -> ignore
                 continue
             new_anno = self.box_type.create(anno)
-            result += new_anno.serialize(self.class_label_map, self.image_width, self.image_height) + '\n'
+            result += (
+                new_anno.serialize(
+                    self.class_label_map, self.image_width, self.image_height
+                )
+                + '\n'
+            )
 
         return result
 
@@ -137,6 +147,10 @@ class DarknetParser(Parser):
         string = string.splitlines()
         for line in string:
             anno = self.box_type()
-            result += [anno.deserialize(line, self.class_label_map, self.image_width, self.image_height)]
+            result += [
+                anno.deserialize(
+                    line, self.class_label_map, self.image_width, self.image_height
+                )
+            ]
 
         return result

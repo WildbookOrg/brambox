@@ -5,10 +5,12 @@
 #
 
 import logging
-log = logging.getLogger(__name__)   # noqa
+
+log = logging.getLogger(__name__)  # noqa
 
 from PIL import Image
 import numpy as np
+
 try:
     import cv2
 except ModuleNotFoundError:
@@ -33,6 +35,7 @@ class ChannelMixer:
         >>> out = mixer(img1, img2)
         >>> # out => opencv image with channels: [img0_channel0, img0_channel1, img1_channel0]
     """
+
     def __init__(self, num_channels=3):
         self.num_channels = num_channels
         self.channels = [(0, i) for i in range(num_channels)]

@@ -17,6 +17,7 @@ log = logging.getLogger(__name__)
 
 class PickleAnnotation(Annotation):
     """ Pickle annotation """
+
     def __getstate__(self):
         state = self.__dict__.copy()
         if hasattr(self, 'keep_ignore') and not self.keep_ignore:
@@ -35,16 +36,20 @@ class PickleAnnotation(Annotation):
         return state
 
     def __setstate__(self, state):
-        if 'occluded_fraction' not in state:   # Backward compatible with older versions
-            log.deprecated('You are using an old pickle format that will be deprecated in newer versions. Consider to save your annotations with the new format.')
+        if 'occluded_fraction' not in state:  # Backward compatible with older versions
+            log.deprecated(
+                'You are using an old pickle format that will be deprecated in newer versions. Consider to save your annotations with the new format.'
+            )
             if 'occlusion_fraction' in state:
                 state['occluded_fraction'] = state['occlusion_fraction']
                 del state['occlusion_fraction']
             else:
                 state['occluded_fraction'] = float(state['occluded'])
                 del state['occluded']
-        if 'truncated_fraction' not in state:   # Backward compatible with older versions
-            log.deprecated('You are using an old pickle format that will be deprecated in newer versions. Consider to save your annotations with the new format.')
+        if 'truncated_fraction' not in state:  # Backward compatible with older versions
+            log.deprecated(
+                'You are using an old pickle format that will be deprecated in newer versions. Consider to save your annotations with the new format.'
+            )
             state['truncated_fraction'] = 0.0
 
         self.__dict__.update(state)
@@ -68,6 +73,7 @@ class PickleParser(Parser):
     Args:
         keep_ignore (boolean, optional): Whether are not to save the ignore flag value of the annotations; Default **False**
     """
+
     parser_type = ParserType.SINGLE_FILE
     box_type = PickleAnnotation
     extension = '.pkl'

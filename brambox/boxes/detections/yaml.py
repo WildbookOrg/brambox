@@ -16,12 +16,18 @@ __all__ = ['YamlDetection', 'YamlParser']
 
 class YamlDetection(Detection):
     """ YAML image detection """
+
     def serialize(self):
         """ generate a yaml detection object """
         class_label = '?' if self.class_label == '' else self.class_label
         obj = {
-            'coords': [int(self.x_top_left), int(self.y_top_left), int(self.width), int(self.height)],
-            'score': self.confidence*100,
+            'coords': [
+                int(self.x_top_left),
+                int(self.y_top_left),
+                int(self.width),
+                int(self.height),
+            ],
+            'score': self.confidence * 100,
         }
         if self.object_id is not None:
             obj['id'] = self.object_id
@@ -63,6 +69,7 @@ class YamlParser(Parser):
                 - coords: [x,y,w,h]
                   score: 50
     """
+
     parser_type = ParserType.SINGLE_FILE
     box_type = YamlDetection
     extension = '.yaml'

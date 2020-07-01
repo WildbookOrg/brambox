@@ -100,12 +100,19 @@ def match_detections(detection_results, ground_truth, overlap_threshold, overlap
         # Match detections
         detections = sorted(detections, key=lambda d: d.confidence, reverse=True)
         for detection in detections:
-            matched_annotation = match_detection_to_annotations(detection, annotations, overlap_threshold, overlap_fn)
+            matched_annotation = match_detection_to_annotations(
+                detection, annotations, overlap_threshold, overlap_fn
+            )
             if matched_annotation is not None:
                 del annotations[matched_annotation]
                 # tp found
                 positives.append((detection.confidence, True))
-            elif match_detection_to_annotations(detection, ignored_annotations, overlap_threshold, ioa) is None:
+            elif (
+                match_detection_to_annotations(
+                    detection, ignored_annotations, overlap_threshold, ioa
+                )
+                is None
+            ):
                 # fp found
                 positives.append((detection.confidence, False))
 
@@ -141,7 +148,7 @@ def intersection(a, b):
     """
     intersection_top_left_x = max(a.x_top_left, b.x_top_left)
     intersection_top_left_y = max(a.y_top_left, b.y_top_left)
-    intersection_bottom_right_x = min(a.x_top_left + a.width,  b.x_top_left + b.width)
+    intersection_bottom_right_x = min(a.x_top_left + a.width, b.x_top_left + b.width)
     intersection_bottom_right_y = min(a.y_top_left + a.height, b.y_top_left + b.height)
 
     intersection_width = intersection_bottom_right_x - intersection_top_left_x

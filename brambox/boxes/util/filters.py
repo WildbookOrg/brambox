@@ -13,8 +13,14 @@ from ..statistics import *
 from ..statistics.util import match_detection_to_annotations
 
 __all__ = [
-    'filter_ignore', 'filter_discard', 'filter_split',
-    'ImageBoundsFilter', 'OcclusionAreaFilter', 'HeightRangeFilter', 'ClassLabelFilter', 'MatchFilter'
+    'filter_ignore',
+    'filter_discard',
+    'filter_split',
+    'ImageBoundsFilter',
+    'OcclusionAreaFilter',
+    'HeightRangeFilter',
+    'ClassLabelFilter',
+    'MatchFilter',
 ]
 
 
@@ -74,13 +80,13 @@ def filter_discard(boxes, filter_fns):
 
     if isinstance(boxes, dict):
         for image_id, values in boxes.items():
-            for i in range(len(values)-1, -1, -1):
+            for i in range(len(values) - 1, -1, -1):
                 for fn in filter_fns:
                     if not fn(values[i]):
                         del values[i]
                         break
     else:
-        for i in range(len(boxes)-1, -1, -1):
+        for i in range(len(boxes) - 1, -1, -1):
             for fn in filter_fns:
                 if not fn(boxes[i]):
                     del boxes[i]
@@ -140,12 +146,17 @@ class ImageBoundsFilter:
     Returns:
         Boolean: **True** if the given box is entirely inside the area
     """
+
     def __init__(self, bounds=(0, 0, float('Inf'), float('Inf'))):
         self.bounds = bounds
 
     def __call__(self, box):
-        return box.x_top_left >= self.bounds[0] and box.x_top_left + box.width <= self.bounds[2] and \
-               box.y_top_left >= self.bounds[1] and box.y_top_left + box.height <= self.bounds[3]
+        return (
+            box.x_top_left >= self.bounds[0]
+            and box.x_top_left + box.width <= self.bounds[2]
+            and box.y_top_left >= self.bounds[1]
+            and box.y_top_left + box.height <= self.bounds[3]
+        )
 
 
 class OcclusionAreaFilter:
@@ -160,6 +171,7 @@ class OcclusionAreaFilter:
     Note:
         The function will return **True** for boxes that are not occluded.
     """
+
     def __init__(self, visible_range=(0, float('Inf'))):
         self.visible_range = visible_range
 
@@ -174,7 +186,10 @@ class OcclusionAreaFilter:
         else:
             visible_fraction = 1.0 - box.occluded_fraction
 
-        return visible_fraction >= self.visible_range[0] and visible_fraction <= self.visible_range[1]
+        return (
+            visible_fraction >= self.visible_range[0]
+            and visible_fraction <= self.visible_range[1]
+        )
 
 
 class HeightRangeFilter:
@@ -186,6 +201,7 @@ class HeightRangeFilter:
     Returns:
         Boolean: **True** if the height lies within the range
     """
+
     def __init__(self, height_range=(0, float('Inf'))):
         self.height_range = height_range
 
@@ -202,6 +218,7 @@ class ClassLabelFilter:
     Returns:
         Boolean: **True** if the ``class_label`` of box is found inside the accepted labels.
     """
+
     def __init__(self, accepted_labels=[]):
         self.accepted_labels = accepted_labels
 
@@ -225,7 +242,10 @@ class MatchFilter:
         The ``match_criteria`` function takes two bounding boxes as input
         and must return a Number to compare with the matching threshold.
     """
-    def __init__(self, boxes, remove_on_match=True, match_threshold=0.5, match_criteria=iou):
+
+    def __init__(
+        self, boxes, remove_on_match=True, match_threshold=0.5, match_criteria=iou
+    ):
         self.boxes = copy.deepcopy(boxes)
         self.rm = remove_on_match
         self.thresh = match_threshold

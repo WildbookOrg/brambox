@@ -63,7 +63,17 @@ class TestYamlAnnotation(unittest.TestCase):
 
     def test_deserialize(self):
         """ test if deserialization of one annotation works """
-        self.anno.deserialize({'coords': [10, 20, 30, 40], 'difficult': True, 'id': 1, 'lost': True, 'occluded_fraction': 70.0, 'truncated_fraction': 0.0}, 'person')
+        self.anno.deserialize(
+            {
+                'coords': [10, 20, 30, 40],
+                'difficult': True,
+                'id': 1,
+                'lost': True,
+                'occluded_fraction': 70.0,
+                'truncated_fraction': 0.0,
+            },
+            'person',
+        )
         self.assertEqual(self.anno.class_label, 'person')
         self.assertEqual(self.anno.object_id, 1)
         self.assertEqual(self.anno.x_top_left, 10)
@@ -91,7 +101,10 @@ class TestYamlParser(unittest.TestCase):
         testanno2.class_label = 'person'
         testanno2.object_id = 1
         testanno2.difficult = True
-        obj = {'img_1': [testanno1, testanno2], 'img_2': [testanno1, testanno1, testanno1]}
+        obj = {
+            'img_1': [testanno1, testanno2],
+            'img_2': [testanno1, testanno1, testanno1],
+        }
 
         string = self.parser.serialize(obj)
         self.assertEqual(string, yaml_string)

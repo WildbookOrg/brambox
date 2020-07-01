@@ -79,6 +79,7 @@ class DollarParser(Parser):
 
     .. _toolbox: https://github.com/pdollar/toolbox/blob/master/detector/bbGt.m
     """
+
     parser_type = ParserType.SINGLE_FILE
     box_type = DollarDetection
 

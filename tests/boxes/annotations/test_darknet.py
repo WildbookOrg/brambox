@@ -27,13 +27,17 @@ class TestDarknetAnnotation(unittest.TestCase):
         self.anno.width = 30
         self.anno.height = 40
 
-        string = self.anno.serialize(self.class_label_map, self.image_width, self.image_height)
+        string = self.anno.serialize(
+            self.class_label_map, self.image_width, self.image_height
+        )
         self.assertEqual(string, '0 0.05 0.1 0.03 0.08')
 
     def test_serialize_class_label_index(self):
         """ test if class label index is correctly mapped """
         self.anno.class_label = 'tv'
-        string = self.anno.serialize(self.class_label_map, self.image_width, self.image_height)
+        string = self.anno.serialize(
+            self.class_label_map, self.image_width, self.image_height
+        )
         self.assertEqual(string, '2 0.0 0.0 0.0 0.0')
 
     def test_serialize_no_class_label_map(self):
@@ -46,12 +50,16 @@ class TestDarknetAnnotation(unittest.TestCase):
         self.assertEqual(string, '5 0.0 0.0 0.0 0.0')
 
         self.anno.class_label = 'willnotwork'
-        self.assertRaises(ValueError, self.anno.serialize, None, self.image_width, self.image_height)
+        self.assertRaises(
+            ValueError, self.anno.serialize, None, self.image_width, self.image_height
+        )
 
     def test_deserialize(self):
         """ test if deserialization of one annotation works """
         string = '1 0.05 0.1 0.03 0.08'
-        self.anno.deserialize(string, self.class_label_map, self.image_width, self.image_height)
+        self.anno.deserialize(
+            string, self.class_label_map, self.image_width, self.image_height
+        )
         self.assertEqual(self.anno.class_label, 'car')
         self.assertAlmostEqual(self.anno.x_top_left, 35)
         self.assertAlmostEqual(self.anno.y_top_left, 30)
@@ -73,7 +81,11 @@ class TestDarknetAnnotation(unittest.TestCase):
 
 class TestDarknetParser(unittest.TestCase):
     def setUp(self):
-        self.parser = DarknetParser(image_width=1000, image_height=500, class_label_map=['person', 'car', 'tv', ''])
+        self.parser = DarknetParser(
+            image_width=1000,
+            image_height=500,
+            class_label_map=['person', 'car', 'tv', ''],
+        )
 
     def tearDown(self):
         pass
@@ -84,8 +96,20 @@ class TestDarknetParser(unittest.TestCase):
         """
         self.assertRaises(ValueError, DarknetParser)
         self.assertRaises(ValueError, DarknetParser, image_width=0)
-        self.assertRaises(ValueError, DarknetParser, image_width=None, image_height=0, class_label_map=[])
-        self.assertRaises(ValueError, DarknetParser, image_width=0, image_height=None, class_label_map=[])
+        self.assertRaises(
+            ValueError,
+            DarknetParser,
+            image_width=None,
+            image_height=0,
+            class_label_map=[],
+        )
+        self.assertRaises(
+            ValueError,
+            DarknetParser,
+            image_width=0,
+            image_height=None,
+            class_label_map=[],
+        )
 
     def test_serialize(self):
         """ test basic serialization with parser """

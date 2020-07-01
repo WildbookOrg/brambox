@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import unittest
 import numpy as np
+
 try:
     import cv2
 except ModuleNotFoundError:
@@ -39,7 +40,9 @@ class TestChannelMixer(unittest.TestCase):
 
     def test_input(self):
         """ Test whether the class catches when giving not enough images as input """
-        self.mixer.set_channels([(0, 0), (0, 1), (0, 2), (1, 0)])   # This means we need 2 input images (more is allowed)
+        self.mixer.set_channels(
+            [(0, 0), (0, 1), (0, 2), (1, 0)]
+        )  # This means we need 2 input images (more is allowed)
         img = Image.new('RGB', (5, 5))
 
         self.assertRaises(ValueError, self.mixer, img)
@@ -47,7 +50,9 @@ class TestChannelMixer(unittest.TestCase):
             self.mixer(img, img)
             self.mixer(img, img, img, img)
         except err:
-            self.fail(f'ChannelMixer raised error when it is given at least the correct number of input images [{err}]')
+            self.fail(
+                f'ChannelMixer raised error when it is given at least the correct number of input images [{err}]'
+            )
 
     def test_set_channels(self):
         """ Test if set_channels catches wrong input """
