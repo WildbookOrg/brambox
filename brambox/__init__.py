@@ -4,8 +4,9 @@
 # Copyright EAVISE
 #
 
+__version__ = '2.0.0'
+
 from .log import *
-from .version import __version__
 
 from . import boxes
 from . import transforms

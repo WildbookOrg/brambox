@@ -14,17 +14,30 @@ def find_scripts():
     return findall('scripts')
 
 
-def get_version():
-    with open('VERSION', 'r') as f:
-        version = f.read().splitlines()[0]
-    with open('brambox/version.py', 'w') as f:
-        f.write('#\n')
-        f.write('# Brambox version: Automatically generated version file\n')
-        f.write('# Copyright EAVISE\n')
-        f.write('#\n\n')
-        f.write('__version__ = "{}"\n'.format(version))
+def parse_version(fpath):
+    """
+    Statically parse the version number from a python file
 
-    return version
+    """
+    import ast
+    from os.path import exists
+
+    if not exists(fpath):
+        raise ValueError('fpath={!r} does not exist'.format(fpath))
+    with open(fpath, 'r') as file_:
+        sourcecode = file_.read()
+    pt = ast.parse(sourcecode)
+
+    class VersionVisitor(ast.NodeVisitor):
+        def visit_Assign(self, node):
+            for target in node.targets:
+                if getattr(target, 'id', None) == '__version__':
+                    self.version = node.value.s
+
+    visitor = VersionVisitor()
+    visitor.visit(pt)
+    return visitor.version
+
 
 
 requirements = [
@@ -39,7 +52,7 @@ requirements.append(pillow_req)
 
 setup_kwargs = dict(
     name='wbia-brambox',
-    version=get_version(),
+    version=parse_version('brambox/__init__.py'),
     author='EAVISE, WildMe Developers',
     author_email='dev@wildme.org',
     description='Unified tools for generating PR curves, crunshing image data annotation sets and more',
