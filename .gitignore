@@ -1,6 +1,5 @@
 # Project specific
 docs/.build
-brambox/version.py
 .coverage
 htmlcov/
 
@@ -13,3 +12,6 @@ __pycache__
 .idea/
 *.html
 .DS_Store
+
+# setuptools_scm version discovery writes the version to <pkg>/_version.py
+**/_version.py

@@ -4,7 +4,10 @@
 # Copyright EAVISE
 #
 
-__version__ = '3.0.0'
+try:
+    from brambox._version import __version__
+except ImportError:
+    __version__ = '0.0.0'
 
 from .log import *
 
