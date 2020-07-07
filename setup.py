@@ -15,16 +15,6 @@ def find_scripts():
     return findall('scripts')
 
 
-requirements = [
-    'pyyaml',
-    'numpy',
-    'scipy',
-    'matplotlib',
-]
-pillow_req = 'pillow-simd' if get_dist('pillow-simd') is not None else 'pillow'
-requirements.append(pillow_req)
-
-
 setup_kwargs = dict(
     name='wbia-brambox',
     author='EAVISE, WildMe Developers',
@@ -43,7 +33,6 @@ setup_kwargs = dict(
     packages=find_packages(),
     scripts=find_scripts(),
     test_suite='tests',
-    install_requires=requirements,
 )
 
 
@@ -127,4 +116,13 @@ def parse_requirements(fname='requirements.txt', with_version=False):
 
 
 if __name__ == '__main__':
-    setup(**setup_kwargs)
+    install_requires = parse_requirements('requirements/runtime.txt')
+    extras_require = {
+        'all': parse_requirements('requirements.txt'),
+        'runtime': parse_requirements('requirements/runtime.txt'),
+        'build': parse_requirements('requirements/build.txt'),
+    }
+
+    setup(
+        install_requires=install_requires, extras_require=extras_require, **setup_kwargs
+    )
