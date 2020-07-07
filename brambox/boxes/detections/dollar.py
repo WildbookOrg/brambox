@@ -24,7 +24,7 @@ class DollarDetection(Detection):
         """ parse a dollar detection string """
         elements = string.split(',')
         self.class_label = class_label_map[0]
-        frame_nr = int(elements[0]) - 1
+        # frame_nr = int(elements[0]) - 1
         self.x_top_left = float(elements[1])
         self.y_top_left = float(elements[2])
         self.width = float(elements[3])

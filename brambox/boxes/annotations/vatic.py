@@ -53,7 +53,7 @@ class VaticAnnotation(Annotation):
         self.y_top_left = float(elements[2])
         self.width = abs(float(elements[3]) - self.x_top_left)
         self.height = abs(float(elements[4]) - self.y_top_left)
-        frame_nr = int(elements[5])
+        # frame_nr = int(elements[5])
         self.lost = elements[6] != '0'
         self.occluded = elements[7] != '0'
         self.class_label = elements[9].strip('"')

@@ -93,13 +93,6 @@ class TestOcclusionAreaFilter(unittest.TestCase):
         self.anno.occluded_fraction = 1 - visible_fraction
         self.assertFalse(self.f(self.anno))
 
-    def test_occlusion_outside_range_upper_bound(self):
-        """Annotation is occluded and the visible fraction > the upper bound
-        """
-        visible_fraction = self.visible_range[1] + 0.1
-        self.anno.occluded_fraction = 1 - visible_fraction
-        self.assertFalse(self.f(self.anno))
-
 
 if __name__ == '__main__':
     unittest.main()

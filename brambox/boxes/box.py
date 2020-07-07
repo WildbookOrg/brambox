@@ -52,7 +52,7 @@ class Box:
             instance.height = obj.height
         else:
             raise TypeError(
-                f'Object is not of type Box or not a string [obj.__class__.__name__]'
+                'Object is not of type Box or not a string [obj.__class__.__name__]'
             )
 
         return instance

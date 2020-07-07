@@ -201,7 +201,7 @@ KWARGS = OrderedDict(
     },
     # packages=find_packages(),
     packages=['brambox'],
-    package_dir={'brambox': 'brambox',},
+    package_dir={'brambox': 'brambox'},
     include_package_data=False,
     # List of classifiers available at:
     # https://pypi.python.org/pypi?%3Aaction=list_classifiers

@@ -49,7 +49,7 @@ class TestChannelMixer(unittest.TestCase):
         try:
             self.mixer(img, img)
             self.mixer(img, img, img, img)
-        except err:
+        except Exception as err:
             self.fail(
                 f'ChannelMixer raised error when it is given at least the correct number of input images [{err}]'
             )

@@ -51,7 +51,7 @@ def main():
 
     args = parser.parse_args()
 
-    filenames = sorted(os.listdir(args.inputdir))
+    # filenames = sorted(os.listdir(args.inputdir))
 
     if not os.path.exists(args.outputdir):
         os.makedirs(args.outputdir)
