@@ -1,58 +1,103 @@
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from setuptools import findall, find_packages, setup
-from pkg_resources import get_distribution, DistributionNotFound
+from __future__ import absolute_import, division, print_function
 import sys
+from os.path import exists
+from collections import OrderedDict
+
+# from setuptools import find_packages
+from skbuild import setup
 
 
-def get_dist(pkgname):
-    try:
-        return get_distribution(pkgname)
-    except DistributionNotFound:
-        return None
-
-
-def find_scripts():
-    return findall('scripts')
-
-
-setup_kwargs = dict(
-    name='wbia-brambox',
-    author='EAVISE, WildMe Developers',
-    author_email='dev@wildme.org',
-    description='Unified tools for generating PR curves, crunshing image data annotation sets and more',
-    long_description=open('README.md').read(),
-    # The following settings retreive the version from git.
-    # See https://github.com/pypa/setuptools_scm/ for more information
-    setup_requires=['setuptools_scm'],
-    use_scm_version={
-        'write_to': 'brambox/_version.py',
-        'write_to_template': '__version__ = "{version}"',
-        'tag_regex': '^(?P<prefix>v)?(?P<version>[^\\+]+)(?P<suffix>.*)?$',
-        'local_scheme': 'dirty-tag',
-    },
-    packages=find_packages(),
-    scripts=find_scripts(),
-    test_suite='tests',
-)
-
-
-def parse_requirements(fname='requirements.txt', with_version=False):
+def native_mb_python_tag(plat_impl=None, version_info=None):
     """
-    Parse the package dependencies listed in a requirements file but strips
-    specific versioning information.
+    Example:
+        >>> print(native_mb_python_tag())
+        >>> print(native_mb_python_tag('PyPy', (2, 7)))
+        >>> print(native_mb_python_tag('CPython', (3, 8)))
+    """
+    if plat_impl is None:
+        import platform
 
-    Args:
-        fname (str): path to requirements file
-        with_version (bool, default=False): if true include version specs
+        plat_impl = platform.python_implementation()
 
-    Returns:
-        List[str]: list of requirements items
+    if version_info is None:
+        import sys
+
+        version_info = sys.version_info
+
+    major, minor = version_info[0:2]
+    ver = '{}{}'.format(major, minor)
+
+    if plat_impl == 'CPython':
+        # TODO: get if cp27m or cp27mu
+        impl = 'cp'
+        if ver == '27':
+            IS_27_BUILT_WITH_UNICODE = True  # how to determine this?
+            if IS_27_BUILT_WITH_UNICODE:
+                abi = 'mu'
+            else:
+                abi = 'm'
+        else:
+            if ver == '38':
+                # no abi in 38?
+                abi = ''
+            else:
+                abi = 'm'
+        mb_tag = '{impl}{ver}-{impl}{ver}{abi}'.format(**locals())
+    elif plat_impl == 'PyPy':
+        abi = ''
+        impl = 'pypy'
+        ver = '{}{}'.format(major, minor)
+        mb_tag = '{impl}-{ver}'.format(**locals())
+    else:
+        raise NotImplementedError(plat_impl)
+    return mb_tag
+
+
+def parse_version(fpath='brambox/__init__.py'):
+    """
+    Statically parse the version number from a python file
+
+
+    """
+    import ast
+
+    if not exists(fpath):
+        raise ValueError('fpath={!r} does not exist'.format(fpath))
+    with open(fpath, 'r') as file_:
+        sourcecode = file_.read()
+    pt = ast.parse(sourcecode)
+
+    class VersionVisitor(ast.NodeVisitor):
+        def visit_Assign(self, node):
+            for target in node.targets:
+                if getattr(target, 'id', None) == '__version__':
+                    self.version = node.value.s
+
+    visitor = VersionVisitor()
+    visitor.visit(pt)
+    return visitor.version
+
+
+def parse_long_description(fpath='README.rst'):
+    """
+    Reads README text, but doesn't break if README does not exist.
+    """
+    if exists(fpath):
+        with open(fpath, 'r') as file:
+            return file.read()
+    return ''
+
+
+def parse_requirements(fname='requirements.txt'):
+    """
+    Parse the package dependencies listed in a requirements file but
+    strips specific versioning information.
 
     CommandLine:
         python -c "import setup; print(setup.parse_requirements())"
-        python -c "import setup; print(chr(10).join(setup.parse_requirements(with_version=True)))"
     """
-    from os.path import exists
     import re
 
     require_fpath = fname
@@ -66,27 +111,28 @@ def parse_requirements(fname='requirements.txt', with_version=False):
             target = line.split(' ')[1]
             for info in parse_require_file(target):
                 yield info
+        elif line.startswith('-e '):
+            info = {}
+            info['package'] = line.split('#egg=')[1]
+            yield info
         else:
-            info = {'line': line}
-            if line.startswith('-e '):
-                info['package'] = line.split('#egg=')[1]
-            else:
-                # Remove versioning from the package
-                pat = '(' + '|'.join(['>=', '==', '>']) + ')'
-                parts = re.split(pat, line, maxsplit=1)
-                parts = [p.strip() for p in parts]
+            # Remove versioning from the package
+            pat = '(' + '|'.join(['>=', '==', '>']) + ')'
+            parts = re.split(pat, line, maxsplit=1)
+            parts = [p.strip() for p in parts]
 
-                info['package'] = parts[0]
-                if len(parts) > 1:
-                    op, rest = parts[1:]
-                    if ';' in rest:
-                        # Handle platform specific dependencies
-                        # http://setuptools.readthedocs.io/en/latest/setuptools.html#declaring-platform-specific-dependencies
-                        version, platform_deps = map(str.strip, rest.split(';'))
-                        info['platform_deps'] = platform_deps
-                    else:
-                        version = rest  # NOQA
-                    info['version'] = (op, version)
+            info = {}
+            info['package'] = parts[0]
+            if len(parts) > 1:
+                op, rest = parts[1:]
+                if ';' in rest:
+                    # Handle platform specific dependencies
+                    # http://setuptools.readthedocs.io/en/latest/setuptools.html#declaring-platform-specific-dependencies
+                    version, platform_deps = map(str.strip, rest.split(';'))
+                    info['platform_deps'] = platform_deps
+                else:
+                    version = rest  # NOQA
+                info['version'] = (op, version)
             yield info
 
     def parse_require_file(fpath):
@@ -97,32 +143,87 @@ def parse_requirements(fname='requirements.txt', with_version=False):
                     for info in parse_line(line):
                         yield info
 
-    def gen_packages_items():
-        if exists(require_fpath):
-            for info in parse_require_file(require_fpath):
-                parts = [info['package']]
-                if with_version and 'version' in info:
-                    parts.extend(info['version'])
-                if not sys.version.startswith('3.4'):
-                    # apparently package_deps are broken in 3.4
-                    platform_deps = info.get('platform_deps')
-                    if platform_deps is not None:
-                        parts.append(';' + platform_deps)
-                item = ''.join(parts)
-                yield item
-
-    packages = list(gen_packages_items())
+    # This breaks on pip install, so check that it exists.
+    packages = []
+    if exists(require_fpath):
+        for info in parse_require_file(require_fpath):
+            package = info['package']
+            if not sys.version.startswith('3.4'):
+                # apparently package_deps are broken in 3.4
+                platform_deps = info.get('platform_deps')
+                if platform_deps is not None:
+                    package += ';' + platform_deps
+            packages.append(package)
     return packages
 
 
-if __name__ == '__main__':
-    install_requires = parse_requirements('requirements/runtime.txt')
-    extras_require = {
-        'all': parse_requirements('requirements.txt'),
-        'runtime': parse_requirements('requirements/runtime.txt'),
-        'build': parse_requirements('requirements/build.txt'),
-    }
+NAME = 'wbia-tpl-brambox'
 
-    setup(
-        install_requires=install_requires, extras_require=extras_require, **setup_kwargs
-    )
+
+MB_PYTHON_TAG = native_mb_python_tag()  # NOQA
+
+AUTHORS = [
+    'EAVISE',
+    'Jason Parham',
+    'WildMe Developers',
+]
+AUTHOR_EMAIL = 'dev@wildme.org'
+URL = 'https://github.com/WildbookOrg/wbia-tpl-brambox'
+LICENSE = 'BSD'
+DESCRIPTION = 'brambox - Basic Recipes for Annotations and Modeling'
+
+
+KWARGS = OrderedDict(
+    name=NAME,
+    author=', '.join(AUTHORS),
+    author_email=AUTHOR_EMAIL,
+    description=DESCRIPTION,
+    long_description=parse_long_description('README.rst'),
+    long_description_content_type='text/x-rst',
+    url=URL,
+    license=LICENSE,
+    install_requires=parse_requirements('requirements/runtime.txt'),
+    extras_require={
+        'all': parse_requirements('requirements.txt'),
+        'tests': parse_requirements('requirements/tests.txt'),
+        'build': parse_requirements('requirements/build.txt'),
+        'runtime': parse_requirements('requirements/runtime.txt'),
+    },
+    # --- VERSION ---
+    # The following settings retreive the version from git.
+    # See https://github.com/pypa/setuptools_scm/ for more information
+    setup_requires=['setuptools_scm'],
+    use_scm_version={
+        'write_to': 'brambox/_version.py',
+        'write_to_template': '__version__ = "{version}"',
+        'tag_regex': '^(?P<prefix>v)?(?P<version>[^\\+]+)(?P<suffix>.*)?$',
+        'local_scheme': 'dirty-tag',
+    },
+    # packages=find_packages(),
+    packages=['brambox'],
+    package_dir={'brambox': 'brambox',},
+    include_package_data=False,
+    # List of classifiers available at:
+    # https://pypi.python.org/pypi?%3Aaction=list_classifiers
+    classifiers=[
+        'Development Status :: 6 - Mature',
+        'License :: OSI Approved :: BSD License',
+        'Intended Audience :: Developers',
+        'Intended Audience :: Science/Research',
+        'Operating System :: MacOS :: MacOS X',
+        'Operating System :: Unix',
+        'Topic :: Software Development :: Libraries :: Python Modules',
+        'Topic :: Utilities',
+        'Programming Language :: Python :: 3',
+        'Programming Language :: Python :: 3.5',
+        'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3.7',
+        'Programming Language :: Python :: 3.8',
+    ],
+)
+
+if __name__ == '__main__':
+    """
+    python -c "import brambox; print(brambox.__file__)"
+    """
+    setup(**KWARGS)

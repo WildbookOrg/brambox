@@ -1,17 +1,17 @@
-# This workflows will upload a Python Package using Twine when a release is created
-# For more information see: https://help.github.com/en/actions/language-and-framework-guides/using-python-with-github-actions#publishing-to-package-registries
+name: Build and upload to PyPI
 
-name: Upload Python Package
-
+# Build on every branch push, tag push, and pull request change:
 on: push
 
 jobs:
+
   build_wheels:
-    name: Build wheels on ${{ matrix.os }}
+    name: Build on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-18.04, macos-latest]
+        os: [ubuntu-latest, macos-latest]
+        python-version: [3.7]
 
     steps:
       - uses: actions/checkout@v2
@@ -22,17 +22,14 @@ jobs:
       - uses: actions/setup-python@v2
         name: Install Python
         with:
-          python-version: '3.6'
+          python-version: ${{ matrix.python-version }}
 
-      - name: Install cibuildwheel
+      - name: Build wheel
+        env:
+          CIBW_SKIP: cp27-* pp27-* pp36-*
+          CIBW_TEST_COMMAND: python -c "import brambox; from brambox.__main__ import main; main()"
         run: |
           python -m pip install cibuildwheel==1.4.2
-
-      - name: Build wheels
-        env:
-          #: Build for CPython 3.x
-          CIBW_BUILD: cp3*
-        run: |
           python -m cibuildwheel --output-dir wheelhouse
 
       - uses: actions/upload-artifact@v2
@@ -44,14 +41,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-        with:
-          # This allows the setuptools_scm library to discover the tag version from git
-          fetch-depth: 0
 
       - uses: actions/setup-python@v2
         name: Install Python
         with:
-          python-version: '3.6'
+          python-version: '3.8'
 
       - name: Build sdist
         run: |
@@ -67,8 +61,6 @@ jobs:
     runs-on: ubuntu-latest
     # upload to PyPI on every tag starting with 'v'
     if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags/v')
-    # alternatively, to publish when a GitHub Release is created, use the following rule:
-    # if: github.event_name == 'release' && github.event.action == 'published'
     steps:
       - uses: actions/download-artifact@v2
         with:
