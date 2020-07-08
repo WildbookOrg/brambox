@@ -157,7 +157,7 @@ def parse_requirements(fname='requirements.txt'):
     return packages
 
 
-NAME = 'wbia-tpl-brambox'
+NAME = 'wbia-brambox'
 
 
 MB_PYTHON_TAG = native_mb_python_tag()  # NOQA
