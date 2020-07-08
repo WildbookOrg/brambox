@@ -11,4 +11,10 @@ python -m pip install -r requirements/build.txt
 
 
 # Install build dependencies
-yum install -y lz4-devel
+yum install -y \
+    libtiff-devel \
+    libjpeg-devel \
+    openjpeg2-devel \
+    zlib-devel \
+    lcms2-devel \
+    libwebp-devel

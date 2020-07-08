@@ -13,4 +13,8 @@ sudo port selfupdate
 
 # Install ports if MacPorts install location is not present
 sudo port install \
-    lz4
+    tiff \
+    libjpeg-turbo \
+    zlib \
+    webp \
+    lcms2

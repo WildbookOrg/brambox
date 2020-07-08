@@ -1,5 +1,5 @@
 matplotlib
 numpy
-pillow
+pillow-simd
 pyyaml
 scipy
