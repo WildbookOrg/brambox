@@ -5,7 +5,7 @@ import sys
 from os.path import exists
 from collections import OrderedDict
 
-# from setuptools import find_packages
+from setuptools import find_packages
 from skbuild import setup
 
 
@@ -211,9 +211,7 @@ KWARGS = OrderedDict(
         'tag_regex': '^(?P<prefix>v)?(?P<version>[^\\+]+)(?P<suffix>.*)?$',
         'local_scheme': 'dirty-tag',
     },
-    # packages=find_packages(),
-    packages=['brambox'],
-    package_dir={'brambox': 'brambox'},
+    packages=find_packages(),
     include_package_data=False,
     # List of classifiers available at:
     # https://pypi.python.org/pypi?%3Aaction=list_classifiers
