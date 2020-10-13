@@ -14,7 +14,7 @@ sudo port selfupdate
 # Install ports if MacPorts install location is not present
 sudo port install \
     tiff \
-    libjpeg-turbo \
     zlib \
     webp \
     lcms2
+    # libjpeg-turbo # tiff depends on jpeg and causes conflict with libjpeg-turbo
